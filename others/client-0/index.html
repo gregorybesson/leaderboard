@@ -13,10 +13,27 @@
 			<input type="text" placeholder="id utilisateur" />
 			<button>Earn points</button>
 		</div>
-		<script type="text/javascript">
-			$(document).ready(function () {
+		
+	<script src="socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function ()
+		{
+			var socket = io.connect('http://localhost:8333');
+			
+			socket.on('connect', function ()
+			{
+				// ask for the 10 last user in databases
 				
 			});
-	  </script>
+
+			$('button').bind('click', function ()
+			{
+				socket.emit('points', {
+					"username" : $('input').val(),
+					"points" : 10
+				});
+			});
+		});
+	</script>
 	</body>
 </html>

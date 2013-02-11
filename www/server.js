@@ -22,37 +22,38 @@ app.get('/', function (req, res)
 });
 
 
-var allClients = 0; 
-var clientId = 1; 
+var allClients = [];
 
-io.sockets.on('connection', function (client) { 
+io.sockets.on('connection', function (client)
+{ 
 	console.log("nouvelle utilisateur conncecté au leaderboard!"); // sortie console sur serveur
 	
-	/*
-	var my_timer; 
-	var my_client = { 
-		"id": clientId, 
-		"obj": client 
-	}; 
-	clientId += 1; 
-	allClients += 1; 
-	my_timer = setInterval(function () { 
-		my_client.obj.send(JSON.stringify({ 
-			"timestamp": (new Date()).getTime(), 
-			"clients": allClients 
-		})); 
-	}, 1000); 
-	client.on('message', function(data) {
-		my_client.obj.broadcast.send(JSON.stringify({ 
-			message: "poke send by client "+my_client.id 
-		})); 
-		console.log(data); 
-	}); 
-	client.on('disconnect', function() { 
-		clearTimeout(my_timer); 
-		allClients -= 1; 
-		console.log('disconnect'); 
-	}); 
-	*/
+	allClients.push(client);
+	
+	client.on('leaderboard', function ()
+	{
+		client.emit('update', {
+			"users" : [
+				{ "username" : "user 1", "points" : "250" },
+				{ "username" : "user 2", "points" : "220" },
+				{ "username" : "user 3", "points" : "200" },
+				{ "username" : "user 4", "points" : "150" },
+				{ "username" : "user 5", "points" : "135" },
+				{ "username" : "user 6", "points" : "99" },
+				{ "username" : "user 7", "points" : "75" },
+				{ "username" : "user 8", "points" : "55" },
+				{ "username" : "user 9", "points" : "46" },
+				{ "username" : "user 10", "points" : "12" }
+			]
+		});
+	});
+	
+	client.on('points', function (data)
+	{
+		client.emit('update', {
+			"user" : data
+		});
+	});
+	
 });
 

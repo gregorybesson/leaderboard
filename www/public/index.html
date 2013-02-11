@@ -2,26 +2,71 @@
 <head>
 	<title>Socket IO Demo</title>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function () { 
-			var socket = io.connect('http://localhost:8333');
-			
-			socket.on('connect', function(){
-				// ask for the 10 last user in databases
-			});
-
-			socket.on('update', function (data) {
-				// new data are retrieve
-				// update the html
-			});
-			
-		});
-  </script>
 </head>
 <body>
-	<div>
-		<!-- html leaderboard goes here -->
-	</div>
+	<!-- html leaderboard goes here -->
+	<script src="socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+		var Users = function (opt)
+		{
+			var self = this;
+			this.opt = opt || {daddy : 'body'};
+			this.dataUsers = null;
+			this.container = $('<ul class="leaderboard"/>');
+			
+			$(this.opt.daddy).append(this.container);
+			
+			this.init = function (data)
+			{
+				var lis = [];
+				this.dataUsers = data;
+				$.each(this.dataUsers, function (i, o)
+				{
+					lis.push($('<li/>', {
+						"class" : "user",
+						"text" : o.username + " has " + o.points
+					}));
+				});
+				self.container.append(lis);
+			}
+			
+			this.updtUser = function (data)
+			{
+				console.log(data);
+			}
+			
+			return this;
+		}
+		
+		$(document).ready(function () { 
+			var socket = io.connect('http://localhost:8333'),
+				users = null;
+			
+			socket.on('connect', function ()
+			{
+				// ask for the 10 last user in databases
+				
+			});
+			
+			socket.on('update', function (data)
+			{
+				// new data are retrieve
+				// update the html
+				if( data == null || data == undefined ||
+					((data.users == null || data.users == undefined) &&
+					(data.user == null || data.user == undefined)) ) return;
+					
+				if(users == null) users = new Users();
+				
+				if(data.users) users.init(data.users);
+				else users.updtUser(data);
+				
+			});
+			
+			
+			socket.emit('leaderboard');
+			
+		});
+	</script>
 </body>
 </html>
