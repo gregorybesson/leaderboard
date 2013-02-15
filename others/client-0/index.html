@@ -9,29 +9,38 @@
 	</head>
 	<body>
 		<div>
-			<!-- UI qui permettra a un utilisateur de gagner des points -->
-			<input type="text" placeholder="id utilisateur" />
-			<button>Earn points</button>
+		    <form action="#">
+                <!-- UI qui permettra a un utilisateur de gagner des points -->
+                <input type="text" placeholder="id utilisateur" />
+                <input type="submit" />
+		    </form>
 		</div>
 		
-	<script src="socket.io/socket.io.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function ()
 		{
-			var socket = io.connect('http://localhost:8333');
+		    //http://localhost:8333
 			
-			socket.on('connect', function ()
+			$('form').bind('submit', function (e)
 			{
-				// ask for the 10 last user in databases
-				
-			});
-
-			$('button').bind('click', function ()
-			{
-				socket.emit('points', {
-					"username" : $('input').val(),
-					"points" : 10
-				});
+			    e.preventDefault();
+				$.ajax({
+                    type: "POST",
+                    url: 'http://localhost:8333/update',
+                    data: {
+                        "username" : $('input').val(),
+                        "points" : 10
+                    },
+                    success: function ()
+                    {
+                        console.log('succes');
+                    },
+                    error: function ()
+                    {
+                        console.log('error');
+                    },
+                    dataType: 'json'
+                });
 			});
 		});
 	</script>

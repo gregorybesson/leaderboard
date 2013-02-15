@@ -1,7 +1,18 @@
 <html>
 <head>
-	<title>Socket IO Demo</title>
+	<title>LeaderBoard notification Demo :</title>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<style type="text/css">
+        *{margin:0;padding:0;font-family:Arial, sans-serif;font-size:11px;color: #666;}
+        .title{display: block;width: 358px;text-align: center;font-size: 1.5em;color: #333;font-weight: bold;}
+        .leaderboard {overflow:hidden;max-width: 330px;border:1px solid #ccc;display:inline-block;position:relative;list-style-position: outside;padding: 0px 0px 0px 25px;}
+        .leaderboard li {width: 320px;font-weight:bold;position:relative;list-style-type: decimal;border-bottom:1px solid #ccc;padding: 5px;-webkit-transition: all 1s ease;transition: all 1s ease;}
+        .leaderboard li.leave{left:360px;opacity:0;}
+        .leaderboard li.enter{left:360px;opacity:0;display:none;}
+        .leaderboard li:last-child {border-bottom:none;}
+        .leaderboard li span{color:#ccc;font-size:0.8em;font-weight:normal;float:right;line-height: 1.5em;}
+        .leaderboard li span:after{content:" ";clear:both;float:right;}
+	</style>
 </head>
 <body>
 	<!-- html leaderboard goes here -->
@@ -14,7 +25,8 @@
 			this.dataUsers = null;
 			this.container = $('<ul class="leaderboard"/>');
 			
-			$(this.opt.daddy).append(this.container);
+			$(this.opt.daddy).append('<di class="title">Leader board demo</div>');
+            $(this.opt.daddy).append(this.container);
 			
 			this.init = function (data)
 			{
@@ -24,7 +36,7 @@
 				{
 					lis.push($('<li/>', {
 						"class" : "user",
-						"text" : o.username + " has " + o.points
+						"html" : o.username + " earned " + o.points + " points! <span>[SERVER REQUEST TIME]</span>"
 					}));
 				});
 				self.container.append(lis);
@@ -32,7 +44,28 @@
 			
 			this.updtUser = function (data)
 			{
-				console.log(data);
+			    var _this = this, last = this.container.find('li:last-child');
+				last.addClass('leave');
+				setTimeout(function ()
+				{
+				    // REMOVE
+				    var newLi = $('<li/>', {
+                        "class" : "user leave",
+                        "html" : data.username +
+                                " earned " + data.points +
+                                " points! <span>[" + new Date().toLocaleDateString() + ", " + new Date().toLocaleTimeString() + "]</span>"
+                    });
+				    last.remove();
+				    
+				    // ADD 
+                    _this.container.prepend(newLi);
+                    
+                    newLi.delay(1000).delay(1).queue(function()
+                    {
+                        $(this).removeClass('leave')
+                    });
+                    
+				}, 1000);
 			}
 			
 			return this;
@@ -50,8 +83,7 @@
 			
 			socket.on('update', function (data)
 			{
-				// new data are retrieve
-				// update the html
+				// new data are retrieve -> update the html
 				if( data == null || data == undefined ||
 					((data.users == null || data.users == undefined) &&
 					(data.user == null || data.user == undefined)) ) return;
@@ -59,7 +91,7 @@
 				if(users == null) users = new Users();
 				
 				if(data.users) users.init(data.users);
-				else users.updtUser(data);
+				else users.updtUser(data.user);
 				
 			});
 			
