@@ -18,6 +18,19 @@
 	<!-- html leaderboard goes here -->
 	<script src="socket.io/socket.io.js"></script>
 	<script type="text/javascript">
+	   /**
+	    * Retrieve param from GET method 
+	    */
+        function gup ( name )
+        {
+            name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");  
+            var regexS = "[\\?&]"+name+"=([^&#]*)",
+                regex = new RegExp( regexS ),
+                results = regex.exec( window.location.href );
+            if( results == null || results == undefined || results == "" ) return "";  
+            else return results[1];
+        }
+        
 		var Users = function (opt)
 		{
 			var self = this;
@@ -72,21 +85,26 @@
 		}
 		
 		$(document).ready(function () { 
-			var socket = io.connect('http://localhost:8333'),
+		    var LeaderBoardRoomRequested = gup( 'roomID' );
+		    if(LeaderBoardRoomRequested == "") return;
+		    
+			var socket = io.connect('http://localhost:8333/'),
 				users = null;
 			
-			socket.on('connect', function ()
-			{
-				// ask for the 10 last user in databases
-				
-			});
+            socket.on('connect', function ()
+            {
+                console.log('connect');
+                // ask for the 10 last user in databases from a specifique room
+            });
+            
 			
 			socket.on('update', function (data)
 			{
 				// new data are retrieve -> update the html
 				if( data == null || data == undefined ||
 					((data.users == null || data.users == undefined) &&
-					(data.user == null || data.user == undefined)) ) return;
+					(data.user == null || data.user == undefined))
+				) return;
 					
 				if(users == null) users = new Users();
 				
@@ -95,8 +113,7 @@
 				
 			});
 			
-			
-			socket.emit('leaderboard');
+            socket.emit('leaderboard', { room : LeaderBoardRoomRequested });
 			
 		});
 	</script>

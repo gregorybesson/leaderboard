@@ -11,7 +11,8 @@
 		<div>
 		    <form action="#">
                 <!-- UI qui permettra a un utilisateur de gagner des points -->
-                <input type="text" placeholder="id utilisateur" />
+                <input class="api-key" type="text" placeholder="Leaderboard API_KEY" />
+                <input class="username" type="text" placeholder="id utilisateur" />
                 <input type="submit" />
 		    </form>
 		</div>
@@ -28,7 +29,8 @@
                     type: "POST",
                     url: 'http://localhost:8333/update',
                     data: {
-                        "username" : $('input').val(),
+                        "username" : $('input.username').val(),
+                        "apiKey" : $('input.api-key').val(),
                         "points" : 10
                     },
                     success: function ()
