@@ -9,7 +9,17 @@
  */
 exports.index = function (req, res)
 {
-    res.redirect('/index.html');
+    res.redirect('/error/error401.html');
+};
+
+/**
+ * Default router, handle unknow route
+ * @param {Object} req, express auto send this param
+ * @param {Object} res, express auto send this param
+ */
+exports.err404 = function (req, res)
+{
+    res.redirect('/error/error404.html');
 };
 
 /**
@@ -20,5 +30,5 @@ exports.index = function (req, res)
 exports.leaderboard = function (req, res)
 {
     res.redirect('/index.html?roomID=' + req.params.roomID);
+    res.respond( '', 200 );
 };
-

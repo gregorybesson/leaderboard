@@ -1,16 +1,17 @@
+var util = require('../lib/adfabUtils');
 // Exports
 module.exports.getUsers = getUsers;
 
 /**
  * 
- * @param {Object} roomName, API KEY == APP KEY, refer to a client who have user who have points....
- * @param {Object} startIndex, -1 pour recupérer les 10 dernier
- * @param {Object} numberOfUser, default 10, numbers of user to return
- * @param {Object} cb, callback function must be the last argument
+ * @param {String} roomName, API KEY == APP KEY, refer to a client who have user who have points....
+ * @param {Number} startIndex, -1 pour recupérer les 10 dernier
+ * @param {Number} numberOfUser, default 10, numbers of user to return
+ * @param {Function} cb, callback function must be the last argument
  */
 function getUsers (roomName, startIndex, numberOfUser, cb)
 {
-    if(roomName == null || roomName == undefined || roomName == "") return;
+    if(!util.NotNull(roomName)) return;
     // define variable
     var _a, err, index, nb;
     
@@ -18,7 +19,7 @@ function getUsers (roomName, startIndex, numberOfUser, cb)
     _a = arguments[(arguments.length-1)];
     
     // IF callBack is passed as thrid arg
-    if( (cb == null || cb || undefined || typeof(cb) != 'function') ) {
+    if( (!util.NotNull(cb) || typeof(cb) != 'function') ) {
         // IF callBack is passed as last arg
         if( arguments.length > 0 && _a != null && _a != undefined && typeof(_a) == 'function' ) cb = _a;
         // IF no callBack

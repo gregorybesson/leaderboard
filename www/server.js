@@ -3,8 +3,9 @@ var express = require('express'),
 	app = express(),
     routes = require('./routes'),
 	server = require('http').createServer(app),
-	io = require('socket.io').listen(server),
+	io = require('socket.io').listen(server, { log: false, origins: '*:*' }),
 	User = require('./models/User.js'),
+    util = require('./lib/adfabUtils'),
 
 /* APPLICATION VARIABLES */
     allClients = [];
@@ -17,6 +18,9 @@ app.configure(function ()
     app.use(express.methodOverride());
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
+    app.use(function(req, res, next){
+        routes.err404(req, res);
+    });
 });
 
 /* Listen to specific port */
@@ -32,8 +36,13 @@ app.get('/leaderboard/:roomID', routes.leaderboard);
 app.post('/update', function (req, res)
 {
     var bodyRequest = req.body;
-    if(bodyRequest.apiKey == null || bodyRequest.apiKey == undefined || bodyRequest.apiKey == "") return;
+    res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
+    if(!util.NotNull(bodyRequest.apiKey, "")) {
+        res.send('0');
+        return;
+    }
     io.sockets.in(bodyRequest.apiKey).emit('update', { "user" : req.body });
+    res.send('1');
 });
 
 /* a user connect to our I/O server */
@@ -44,10 +53,10 @@ io.sockets.on('connection', function (client)
     // User request a leaderboard
 	client.on('leaderboard', function (data) // data must contain
 	{
-        if(data.room == null || data.room == undefined || data.room == "") return;
+        if(!util.NotNull(data.room, "")) return;
         
         // push user to the room Array ( and create hes room in the Array if it doesn't exist )
-        if(allClients[data.room] == null || allClients[data.room] == undefined) allClients[data.room] = [];
+        if(!util.NotNull(allClients[data.room])) allClients[data.room] = [];
         allClients[data.room].push(client);
         
 	    client.join(data.room); // Make the client user join the requested room

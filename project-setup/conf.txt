@@ -1,0 +1,85 @@
+<Location /server-info>
+    SetHandler server-info
+    Order allow,deny
+    Allow from all
+    Allow from localhost
+    Allow from 127.0.0.1
+</Location>
+
+<Location /server-status>
+    SetHandler server-status
+    Order allow,deny
+    Allow from all
+    Allow from 127.0.0.1
+</Location>
+
+LoadModule zend_enabler_module "C:\programmation\Zend\ZendServer\bin\ZendEnablerApache.dll"
+ZendEnablerConfig "C:\programmation\Zend\ZendServer\etc\ZendEnablerConf.xml"
+AddHandler zend-enabler-script .php
+AddType application/x-httpd-php .php
+
+<Location /phpMyAdmin>
+  Order allow,deny
+  Allow from all
+</Location>
+
+Alias /phpMyAdmin "C:\programmation\Zend\phpMyAdmin"
+
+Listen 10081
+
+NameVirtualHost *:10081
+
+<VirtualHost *:10081>
+    Alias /ZendServer "C:\programmation\Zend\ZendServer\GUI\html"
+    DocumentRoot "C:\programmation\Zend\ZendServer\GUI\html"
+    RewriteEngine On
+    RewriteRule ^/$ /ZendServer/ [R]
+    RewriteRule ^/Login$ /ZendServer/Login [R]
+    <Directory "C:\programmation\Zend\ZendServer\GUI\html">
+        AllowOverride All
+        Allow from all
+    </Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+    DocumentRoot C:/programmation/www
+    <Directory "C:/programmation/www">
+        DirectoryIndex index.html
+        #Options -Indexes FollowSymLinks SymLinksifOwnerMatch
+        Options Indexes +FollowSymLinks
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+</VirtualHost>
+
+NameVirtualHost playground.client:80
+
+<VirtualHost playground.client:80>
+    DocumentRoot C:/programmation/www/github/leaderboard/others
+    
+    <Directory "C:/programmation/www/github/leaderboard/others">
+        Options Indexes +FollowSymLinks +Includes
+        RewriteEngine on
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+        
+</VirtualHost>
+
+NameVirtualHost playground.dev:8333
+<VirtualHost playground.dev:8333>
+    DocumentRoot C:/programmation/www/github/leaderboard/
+    
+    <Directory "C:/programmation/www/github/leaderboard/www">
+        Options Indexes +FollowSymLinks +Includes
+        RewriteEngine on
+        AllowOverride All
+        Order allow,deny
+        Allow from all
+    </Directory>
+        
+</VirtualHost>
+AllowEncodedSlashes On

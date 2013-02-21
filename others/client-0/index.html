@@ -27,19 +27,22 @@
 			    e.preventDefault();
 				$.ajax({
                     type: "POST",
+                    dataType: "json",
                     url: 'http://localhost:8333/update',
                     data: {
                         "username" : $('input.username').val(),
                         "apiKey" : $('input.api-key').val(),
                         "points" : 10
                     },
-                    success: function ()
+                    success: function (data)
                     {
                         console.log('succes');
+                        console.log(data); // data = 1 (good) || data = 0 (bad)
                     },
                     error: function ()
                     {
                         console.log('error');
+                        console.log(data);
                     },
                     dataType: 'json'
                 });
