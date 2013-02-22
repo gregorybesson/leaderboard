@@ -2,6 +2,8 @@
  * Route to the index.html when method GET
  */
 
+
+
 /**
  * Default router 
  * @param {Object} req, express auto send this param
@@ -9,7 +11,7 @@
  */
 exports.index = function (req, res)
 {
-    res.redirect('/error/error401.html');
+    res.render('error/401', { title: '401', msg: 'Permission issue to see this page' });
 };
 
 /**
@@ -19,7 +21,7 @@ exports.index = function (req, res)
  */
 exports.err404 = function (req, res)
 {
-    res.redirect('/error/error404.html');
+    res.render('error/404', { title: '404', msg: 'File not found' })
 };
 
 /**
@@ -29,6 +31,8 @@ exports.err404 = function (req, res)
  */
 exports.leaderboard = function (req, res)
 {
-    res.redirect('/index.html?roomID=' + req.params.roomID);
-    res.respond( '', 200 );
+    res.render('index' , {
+        title: 'Express',
+        roomID : req.params.roomID
+    });
 };

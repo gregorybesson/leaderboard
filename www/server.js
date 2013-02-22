@@ -13,20 +13,23 @@ var express = require('express'),
 /* Server */
 app.configure(function ()
 {
-    app.set('views', __dirname + '/public');
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
+    app.set("view options", {layout: true});
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(app.router);
     app.use(express.static(__dirname + '/public'));
-    app.use(function(req, res, next){
+    app.use(app.router);
+    /*app.use(function(req, res, next){
         routes.err404(req, res);
-    });
+    });*/
 });
 
 /* Listen to specific port */
 server.listen(8333);
 
 /* Define default index router */
+//res.sendfile( require('path').normalize(__dirname + '/../public/index.html?roomID=' + req.params.roomID) );
 app.get('/', routes.index);
 
 /* Define router for user who request a leaderboard */
