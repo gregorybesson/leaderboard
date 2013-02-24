@@ -1,4 +1,5 @@
-var util = require('../lib/adfabUtils');
+var util = require('../lib/adfabUtils'),
+	XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 // Exports
 module.exports.getUsers = getUsers;
 
@@ -34,11 +35,25 @@ function getUsers (roomName, startIndex, numberOfUser, cb)
     // ------------------------------------------
     //TODO retrieve from BDD users from request -
     // ------------------------------------------
+    var xhr = new XMLHttpRequest(); // Voyez la fonction getXMLHttpRequest() définie dans la partie précédente
     
+	xhr.onreadystatechange = function ()
+	{
+		console.log(xhr.readyState);
+		console.log(xhr.status);
+		console.log(xhr.responseText);
+		if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+			console.log(xhr.responseText); // C'est bon \o/
+		}
+	};
+	console.log("http://localhost/github/leaderboard/db/db.php?leaderboard=1&API_KEY=" + roomName);
+	xhr.open("GET", "http://localhost/github/leaderboard/db/db.php?leaderboard=1&API_KEY=" + roomName, true);
+	xhr.send(null);
     
     if (err) cb(err); // IF error happened
     else { // send JSON request
-        cb(null, { // send fake JSON ( currently no REST API )
+    	//b(null, );
+        /*cb(null, { // send fake JSON ( currently no REST API )
             "users" : [
                 { "username" : "user 1", "points" : "250" },
                 { "username" : "user 2", "points" : "220" },
@@ -52,6 +67,6 @@ function getUsers (roomName, startIndex, numberOfUser, cb)
                 { "username" : "user 10", "points" : "12" }
             ],
             room : roomName // Don't forget to re-send room's name
-        });
+        });*/
     }
 }

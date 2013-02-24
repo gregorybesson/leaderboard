@@ -20,16 +20,15 @@ app.configure(function ()
     app.use(express.methodOverride());
     app.use(express.static(__dirname + '/public'));
     app.use(app.router);
-    /*app.use(function(req, res, next){
+    app.use(function(req, res, next){
         routes.err404(req, res);
-    });*/
+    });
 });
 
 /* Listen to specific port */
 server.listen(8333);
 
 /* Define default index router */
-//res.sendfile( require('path').normalize(__dirname + '/../public/index.html?roomID=' + req.params.roomID) );
 app.get('/', routes.index);
 
 /* Define router for user who request a leaderboard */
@@ -66,14 +65,16 @@ io.sockets.on('connection', function (client)
 	    client.currentRoom = data.room; // Save hes room name so he know it
 	    
 	    // Request user from the leaderboard's room
-        User.getUsers(-1, data.room, function(err, userData) {
+        User.getUsers(-1, data.room, function (err, userData)
+        {
             if (err) throw err;
             client.emit('update', userData); // send the leaderboard to the user who just connect
         });
 	});
 	
 	// Listen for connection close to remove the user from the room he was
-	client.on('disconnect', function () {
+	client.on('disconnect', function ()
+	{
         //io.sockets.in(client.currentRoom).emit('test'); // e: to broadcast stuff when a room user has left it
 	    allClients[client.currentRoom] = allClients[client.currentRoom].slice( // Delete user from room visited
 	        allClients[client.currentRoom].indexOf(client)
