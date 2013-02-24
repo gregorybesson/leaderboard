@@ -1,9 +1,9 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 3.3.3
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Dim 24 Février 2013 à 16:34
+-- Généré le : Dim 24 Février 2013 à 17:32
 -- Version du serveur: 5.1.50
 -- Version de PHP: 5.3.9-ZS5.6.0
 
@@ -26,20 +26,20 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 CREATE TABLE IF NOT EXISTS `client` (
-  `idclient` int(11) NOT NULL AUTO_INCREMENT,
-  `apikey` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idclient`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+  `clientid` int(11) NOT NULL,
+  `apikey` varchar(45) NOT NULL,
+  PRIMARY KEY (`apikey`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `client`
 --
 
-INSERT INTO `client` (`idclient`, `apikey`) VALUES
-(1, 'key_zero'),
+INSERT INTO `client` (`clientid`, `apikey`) VALUES
 (2, 'key_first'),
 (3, 'key_second'),
-(4, 'key_third');
+(4, 'key_third'),
+(1, 'key_zero');
 
 -- --------------------------------------------------------
 
@@ -48,29 +48,29 @@ INSERT INTO `client` (`idclient`, `apikey`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `leaderboard` (
-  `idleaderboard` int(11) NOT NULL AUTO_INCREMENT,
-  `client_idclient` int(11) NOT NULL,
+  `idleaderboard` int(11) NOT NULL,
   `user_iduser` int(11) NOT NULL,
+  `client_apikey` varchar(45) NOT NULL,
   PRIMARY KEY (`idleaderboard`),
-  KEY `fk_leaderboard_client_idx` (`client_idclient`),
-  KEY `fk_leaderboard_user1_idx` (`user_iduser`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+  KEY `fk_leaderboard_user1_idx` (`user_iduser`),
+  KEY `fk_leaderboard_client1_idx` (`client_apikey`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `leaderboard`
 --
 
-INSERT INTO `leaderboard` (`idleaderboard`, `client_idclient`, `user_iduser`) VALUES
-(1, key_zero, 1),
-(2, key_zero, 2),
-(3, key_first, 3),
-(4, key_first, 4),
-(5, key_first, 5),
-(6, key_second, 6),
-(7, key_second, 7),
-(8, key_third, 8),
-(9, key_third, 9),
-(10, key_zero, 10);
+INSERT INTO `leaderboard` (`idleaderboard`, `user_iduser`, `client_apikey`) VALUES
+(1, 1, 'key_zero'),
+(2, 2, 'key_zero'),
+(3, 3, 'key_first'),
+(4, 4, 'key_first'),
+(5, 5, 'key_first'),
+(6, 6, 'key_second'),
+(7, 7, 'key_second'),
+(8, 8, 'key_third'),
+(9, 9, 'key_third'),
+(10, 10, 'key_zero');
 
 -- --------------------------------------------------------
 
@@ -110,5 +110,5 @@ INSERT INTO `user` (`iduser`, `total_points`, `last_updt`, `last_points_updt`) V
 -- Contraintes pour la table `leaderboard`
 --
 ALTER TABLE `leaderboard`
-  ADD CONSTRAINT `fk_leaderboard_client` FOREIGN KEY (`client_idclient`) REFERENCES `client` (`idclient`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_leaderboard_user1` FOREIGN KEY (`user_iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_leaderboard_user1` FOREIGN KEY (`user_iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_leaderboard_client1` FOREIGN KEY (`client_apikey`) REFERENCES `client` (`apikey`) ON DELETE NO ACTION ON UPDATE NO ACTION;
