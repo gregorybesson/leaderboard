@@ -1,14 +1,15 @@
 /* SERVER UTILITIES */
-var express = require('express'),
+var CONF = require('./config/config.js'),
+    express = require('express'),
 	app = express(),
     routes = require('./routes'),
 	server = require('http').createServer(app),
-	io = require('socket.io').listen(server, { log: false, origins: '*:*' }),
+	io = require('socket.io').listen(server, { log: CONF.IO_LOG, origins: CONF.IO_ORIGINS }),
 	User = require('./models/User.js'),
     util = require('./lib/adfabUtils'),
-
 /* APPLICATION VARIABLES */
     allClients = [];
+
 
 /* Server */
 app.configure(function ()
@@ -26,7 +27,7 @@ app.configure(function ()
 });
 
 /* Listen to specific port */
-server.listen(8333);
+server.listen(CONF.PORT);
 
 /* Define default index router */
 app.get('/', routes.index);
@@ -43,14 +44,18 @@ app.post('/update', function (req, res)
         res.send('0');
         return;
     }
-    io.sockets.in(bodyRequest.apiKey).emit('update', { "user" : req.body });
-    res.send('1');
+    User.updtUsersPoints(req.body.username, req.body.points, function (err, resp)
+    {
+        io.sockets.in(bodyRequest.apiKey).emit('update', { "user" : req.body });
+        res.send(resp);
+    });
+    
 });
 
 /* a user connect to our I/O server */
 io.sockets.on('connection', function (client)
 {
-	console.log("nouvelle utilisateur conncecté au leaderboard!"); // sortie console sur serveur
+	util.log("nouvelle utilisateur conncecté au leaderboard!"); // sortie console sur serveur
     
     // User request a leaderboard
 	client.on('leaderboard', function (data) // data must contain
@@ -65,7 +70,7 @@ io.sockets.on('connection', function (client)
 	    client.currentRoom = data.room; // Save hes room name so he know it
 	    
 	    // Request user from the leaderboard's room
-        User.getUsers(-1, data.room, function (err, userData)
+        User.getUsers(data.room, -1, function (err, userData)
         {
             if (err) throw err;
             client.emit('update', userData); // send the leaderboard to the user who just connect
@@ -76,10 +81,11 @@ io.sockets.on('connection', function (client)
 	client.on('disconnect', function ()
 	{
         //io.sockets.in(client.currentRoom).emit('test'); // e: to broadcast stuff when a room user has left it
-	    allClients[client.currentRoom] = allClients[client.currentRoom].slice( // Delete user from room visited
-	        allClients[client.currentRoom].indexOf(client)
-	        , 1
-	    );
+        if(util.NotNull(allClients[client.currentRoom]) && allClients[client.currentRoom].indexOf(client) >= 0)
+    	    allClients[client.currentRoom] = allClients[client.currentRoom].slice( // Delete user from room visited
+    	        allClients[client.currentRoom].indexOf(client)
+    	        , 1
+    	    );
     });
     
 });

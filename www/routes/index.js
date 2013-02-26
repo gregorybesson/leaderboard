@@ -32,7 +32,7 @@ exports.err404 = function (req, res)
 exports.leaderboard = function (req, res)
 {
     res.render('index' , {
-        title: 'Express',
+        title: req.params.roomID + "'s Leaderboard",
         roomID : req.params.roomID
     });
 };

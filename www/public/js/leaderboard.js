@@ -1,4 +1,7 @@
-
+/**
+ *  
+ * @param {Object} opt
+ */
 var Users = function (opt)
 {
     var self = this;
@@ -17,7 +20,7 @@ var Users = function (opt)
         {
             lis.push($('<li/>', {
                 "class" : "user",
-                "html" : o.username + " earned " + o.points + " points! <span>[SERVER REQUEST TIME]</span>"
+                "html" : o.username + " earned " + o.points + " points! <span>[" + o.last_updt + "]</span>"
             }));
         });
         self.container.append(lis);
@@ -52,7 +55,7 @@ var Users = function (opt)
     return this;
 };
 
-function ready ()
+function init ()
 {
     var LeaderBoardRoomRequested = roomID;
     if(LeaderBoardRoomRequested == "") return;
@@ -69,6 +72,7 @@ function ready ()
     
     socket.on('update', function (data)
     {
+        console.log(data);
         // new data are retrieve -> update the html
         if( data == null || data == undefined ||
             ((data.users == null || data.users == undefined) &&
@@ -85,4 +89,8 @@ function ready ()
     socket.emit('leaderboard', { room : LeaderBoardRoomRequested }); 
 }
 
-ready();
+$(document).ready(function ()
+{
+    init();
+}); 
+
