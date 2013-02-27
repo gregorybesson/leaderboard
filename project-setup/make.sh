@@ -1,0 +1,1 @@
+Set-Alias make "C:\cygwin\bin\make.exe"

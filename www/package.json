@@ -2,9 +2,14 @@
     "name": "leaderboard"
     ,"version": "0.0.1"
     ,"private": true
+    ,"scripts": {
+        "test": "make test",
+        "start": "node server"
+    }
     ,"dependencies": {
         "express": "*"
         ,"socket.io": "*"
         ,"jade": "*"
+        ,"mocha": "0.3.x"
     }
 }
