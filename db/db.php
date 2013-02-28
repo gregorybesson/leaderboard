@@ -66,11 +66,11 @@ function updtUserPoints ($hostname, $username, $password, $iduser, $points)
         $sql = "UPDATE user
                 SET total_points=(total_points+$points), last_updt=NOW(), last_points_updt=$points
                 WHERE user.iduser=$iduser;";
-        
-        $result = $db->query($sql);
-        echo 1;
+        $sth = $db->prepare($sql);
+        $result = $sth->execute();
+        echo $result;
         disconnect($db);
-    } catch(PDOException $e) { echo $e->getMessage(); }
+    } catch(PDOException $e) { echo "fick"; }
 }
 
 ?>

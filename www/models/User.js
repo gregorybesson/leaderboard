@@ -10,11 +10,12 @@ module.exports = {
      * @param {Number} startIndex, -1 pour recupérer les 10 dernier
      * @param {Number} numberOfUser, default 10, numbers of user to return
      * @param {Function} cb, callback function must be the last argument
+     * @return {Object}
      */
     getUsers : function (roomName, startIndex, numberOfUser, cb)
     {
         if(!util.NotNull(roomName)) return;
-        var _a, err, index, nb; // define variable
+        var _a, index, nb, response; // define variable
         
         _a = arguments[(arguments.length - 1)]; // Retrieve last arg from the function call
         
@@ -25,7 +26,8 @@ module.exports = {
             else return; // IF no callBack
         }
         
-        err = false; // WILL HANDLE ERROR LATER
+        response = {};
+        response.err = null; // WILL HANDLE ERROR / RESPONSE LATER
         index = startIndex || -1;
         nb = numberOfUser || 10;
         
@@ -34,14 +36,30 @@ module.exports = {
         
         xhr.onreadystatechange = function ()
         {
-            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) cb(null, JSON.parse(xhr.responseText));
-            else if(xhr.readyState != 4 && xhr.status != 200 && xhr.status != null) cb(err);
+            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+                response = JSON.parse(xhr.responseText);
+                //throw new Error(1);
+                cb('{"users": [{"username": "user-06","total_points": "12315","last_updt": "2013-01-0912: 30: 03","points": "456"},{"username": "user-07","total_points": "615316","last_updt": "2013-01-2812: 30: 03","points": "65"}]}');
+            }
+            else if(xhr.readyState != 4 && xhr.status != 200 && xhr.status != null) {
+                response.err = xhr.readyState;
+                //throw new Error(2);
+                cb(response);
+            }
+            
+            
         };
         
         xhr.open("GET", CONF.DB.PATH + "?leaderboard=1&API_KEY=" + roomName, true);
         xhr.send(null);
     },
     
+    /**
+     * Update points for user in DB and notify user who whatch the leaderboard
+     * @param {Object} id
+     * @param {Object} points
+     * @param {Object} cb
+     */
     updtUsersPoints : function (id, points, cb)
     {
         if(!util.NotNull(id)) return;

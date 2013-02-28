@@ -70,9 +70,9 @@ io.sockets.on('connection', function (client)
 	    client.currentRoom = data.room; // Save hes room name so he know it
 	    
 	    // Request user from the leaderboard's room
-        User.getUsers(data.room, -1, function (err, userData)
+        User.getUsers(data.room, -1, function (userData)
         {
-            if (err) throw err;
+            if (userData.err) throw userData.err;
             client.emit('update', userData); // send the leaderboard to the user who just connect
         });
 	});
