@@ -16,12 +16,13 @@ app.configure(function ()
 {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
-    app.set("view options", {layout: true});
+    app.set("view options", {layout : true});
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.static(__dirname + '/public'));
     app.use(app.router);
-    app.use(function(req, res, next){
+    app.use(function (req, res, next)
+    {
         routes.err404(req, res);
     });
 });
@@ -41,7 +42,8 @@ app.post('/update', function (req, res)
     var bodyRequest = req.body;
     res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
     if(!util.NotNull(bodyRequest.apiKey, "")) {
-        res.send('0');
+        res.send(bodyRequest.apiKey);
+        //res.send('0');
         return;
     }
     User.updtUsersPoints(req.body.username, req.body.points, function (err, resp)

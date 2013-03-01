@@ -72,13 +72,12 @@ function init ()
     
     socket.on('update', function (data)
     {
-        console.log(data);
         // new data are retrieve -> update the html
         if( data == null || data == undefined ||
             ((data.users == null || data.users == undefined) &&
             (data.user == null || data.user == undefined))
         ) return;
-            
+        
         if(users == null) users = new Users();
         
         if(data.users) users.init(data.users);

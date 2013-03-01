@@ -21,9 +21,10 @@ suite('User', function ()
             0,                  // Start index
             10,                 // Number of users
             function (response) // callBack
-            { 
+            {
+                if(response.users == null && response.users == undefined) throw new Error("Function getUsers() didn't return any user");
                 // Cast to JS object
-                response = JSON.parse(response).users;
+                response = response.users;
                 // Type
                 response.should.be.a('object');
                 // Prop
@@ -38,7 +39,8 @@ suite('User', function ()
     /**
      * TEST AJAX FUNCTION CALL : updtUsersPoints() which retrieve a number == 1, because 1 is printed by PHP if the request worked and 0 wich is false if not
      */
-    test('function updtUsersPoints() should return a number equal to 1', function(done) {
+    test('function updtUsersPoints() should return a number equal to 1', function (done)
+    {
         User.updtUsersPoints(
             1,                      // ID user
             20,                     // Points earned

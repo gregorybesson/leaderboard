@@ -36,18 +36,14 @@ module.exports = {
         
         xhr.onreadystatechange = function ()
         {
-            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) { // SUCCESS
                 response = JSON.parse(xhr.responseText);
-                //throw new Error(1);
-                cb('{"users": [{"username": "user-06","total_points": "12315","last_updt": "2013-01-0912: 30: 03","points": "456"},{"username": "user-07","total_points": "615316","last_updt": "2013-01-2812: 30: 03","points": "65"}]}');
-            }
-            else if(xhr.readyState != 4 && xhr.status != 200 && xhr.status != null) {
-                response.err = xhr.readyState;
-                //throw new Error(2);
                 cb(response);
             }
-            
-            
+            else if(xhr.readyState != 4 && xhr.status != 200 && xhr.status != null) { // EPIC FAIL
+                response.err = xhr.readyState;
+                cb(response);
+            }
         };
         
         xhr.open("GET", CONF.DB.PATH + "?leaderboard=1&API_KEY=" + roomName, true);
