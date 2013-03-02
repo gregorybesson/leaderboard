@@ -12,5 +12,6 @@
         ,"jade": "*"
         ,"mocha": "0.3.x"
         ,"request": "*"
+        ,"socket.io-client" : "*"
     }
 }

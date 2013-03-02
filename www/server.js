@@ -17,6 +17,7 @@ app.configure(function ()
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.set("view options", {layout : true});
+    app.use(express.logger());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.static(__dirname + '/public'));
@@ -41,9 +42,9 @@ app.post('/update', function (req, res)
 {
     var bodyRequest = req.body;
     res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
+    
     if(!util.NotNull(bodyRequest.apiKey, "")) {
         res.send(bodyRequest.apiKey);
-        //res.send('0');
         return;
     }
     User.updtUsersPoints(req.body.username, req.body.points, function (err, resp)
