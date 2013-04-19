@@ -29,10 +29,25 @@ exports.err404 = function (req, res)
  * @param {Object} req, express auto send this param
  * @param {Object} res, express auto send this param
  */
-exports.leaderboard = function (req, res)
+exports.connection = function (req, res)
 {
-    res.render('index' , {
-        title: req.params.roomID + "'s Leaderboard",
-        roomID : req.params.roomID
-    });
+    if(req.params.type)
+        res.render('index' + req.params.type , {
+            title: req.params.roomID + "'s " + req.params.type,
+            roomID : req.params.roomID
+        });
+};
+
+/**
+ * LeaderBoard router 
+ * @param {Object} req, express auto send this param
+ * @param {Object} res, express auto send this param
+ */
+exports.widget = function (req, res)
+{
+    if(req.params.type)
+        res.render('widget/' + req.params.type , {
+            title: req.params.roomID + "'s " + req.params.type,
+            roomID : req.params.roomID
+        });
 };

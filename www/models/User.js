@@ -46,6 +46,7 @@ module.exports = {
             }
         };
         
+        console.log(CONF.DB.PATH + "?leaderboard=1&API_KEY=" + roomName);
         xhr.open("GET", CONF.DB.PATH + "?leaderboard=1&API_KEY=" + roomName, true);
         xhr.send(null);
     },

@@ -7,9 +7,9 @@ var Users = function (opt)
     var self = this;
     this.opt = opt || {daddy : 'body'};
     this.dataUsers = null;
-    this.container = $('<ul class="leaderboard"/>');
+    this.container = $('<ul class="list"/>');
     
-    $(this.opt.daddy).append('<di class="title">Leader board demo</div>');
+    $(this.opt.daddy).append('<div class="title">List demo</div>');
     $(this.opt.daddy).append(this.container);
     
     this.init = function (data)

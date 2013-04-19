@@ -44,29 +44,33 @@ NameVirtualHost *:10081
 <VirtualHost *:80>
     DocumentRoot C:/programmation/www
     <Directory "C:/programmation/www">
-        DirectoryIndex index.html
-        #Options -Indexes FollowSymLinks SymLinksifOwnerMatch
-        Options Indexes +FollowSymLinks
-        AllowOverride All
-        Order allow,deny
-        Allow from all
+            DirectoryIndex index.html
+            #Options -Indexes FollowSymLinks SymLinksifOwnerMatch
+            Options Indexes +FollowSymLinks
+            AllowOverride All
+            Order allow,deny
+            Allow from all
     </Directory>
-
-</VirtualHost>
-
-NameVirtualHost playground.client:80
-
-<VirtualHost playground.client:80>
-    DocumentRoot C:/programmation/www/github/leaderboard/others
     
-    <Directory "C:/programmation/www/github/leaderboard/others">
-        Options Indexes +FollowSymLinks +Includes
-        RewriteEngine on
+    # RSE
+    Alias /RSE C:/programmation/www/RSE/back
+    <Directory "C:/programmation/www/RSE/back">
+        Options Indexes FollowSymLinks
+        DirectoryIndex index.php
         AllowOverride All
         Order allow,deny
         Allow from all
     </Directory>
-        
+
+    # PLAYGROUND
+    Alias /play-ground C:/programmation/www/github/leaderboard/others
+    <Directory "C:/programmation/www/github/leaderboard/others">
+            Options Indexes +FollowSymLinks +Includes
+            RewriteEngine on
+            AllowOverride All
+            Order allow,deny
+            Allow from all
+        </Directory>
 </VirtualHost>
 
 NameVirtualHost playground.dev:8333

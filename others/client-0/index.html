@@ -8,7 +8,7 @@
 		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	</head>
 	<body>
-		<div>
+		<div id="container">
 		    <form action="#">
                 <!-- UI qui permettra a un utilisateur de gagner des points -->
                 <input class="api-key" type="text" placeholder="Leaderboard API_KEY" />
@@ -16,37 +16,62 @@
                 <input type="submit" />
 		    </form>
 		</div>
-		
-	<script type="text/javascript">
-		$(document).ready(function ()
-		{
-		    //http://localhost:8333
-			
-			$('form').bind('submit', function (e)
-			{
-			    e.preventDefault();
-				$.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: 'http://localhost:8333/update',
-                    data: {
-                        "username" : $('input.username').val(),
-                        "apiKey" : $('input.api-key').val(),
-                        "points" : 10
-                    },
-                    success: function (data)
-                    {
-                        console.log('succes');
-                        console.log(data); // data = 1 (good) || data = 0 (bad)
-                    },
-                    error: function ()
-                    {
-                        console.log('error');
-                        console.log(data);
+		<script src="script/playground-client-side.js" type="text/javascript" charset="utf-8"></script>
+    	<script type="text/javascript">
+    	/*
+    		$(document).ready(function ()
+    		{
+    		    //http://localhost:8333
+    			
+    			$('form').bind('submit', function (e)
+    			{
+    			    e.preventDefault();
+    				$.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: 'http://localhost:8333/update',
+                        data: {
+                            "username" : $('input.username').val(),
+                            "apiKey" : $('input.api-key').val(),
+                            "points" : 10
+                        },
+                        success: function (data)
+                        {
+                            console.log('succes');
+                            console.log(data); // data = 1 (good) || data = 0 (bad)
+                        },
+                        error: function ()
+                        {
+                            console.log('error');
+                            console.log(data);
+                        }
+                    });
+    			});
+    		});
+    		*/
+    		PG_C.register('key_first');
+    		/*
+    		PG_C.send (
+    		    {
+    		        url : 'http://localhost:8333/update',
+    		        data : {
+                        username : 'user-1',
+                        apiKey : 'key_first',
+                        points : 10
                     }
-                });
-			});
-		});
-	</script>
+    		    },
+    		    function ()
+                {
+                    console.log('++++++++++++++++++++++++++++++++++++++++ 1');
+                },
+                function ()
+                {
+                    console.log('++++++++++++++++++++++++++++++++++++++++ 2');
+                }
+    		);
+    		*/
+    		PG_C.send('#container', 'update', 'user-10');
+    		//myRequest.update('id=1234&color=blue','POST');
+    	</script>
 	</body>
 </html>

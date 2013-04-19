@@ -7,9 +7,9 @@ var Users = function (opt)
     var self = this;
     this.opt = opt || {daddy : 'body'};
     this.dataUsers = null;
-    this.container = $('<ul class="leaderboard"/>');
+    this.container = $('<ul class="list"/>');
     
-    $(this.opt.daddy).append('<di class="title">Leader board demo</div>');
+    $(this.opt.daddy).append('<div class="title">List demo</div>');
     $(this.opt.daddy).append(this.container);
     
     this.init = function (data)
@@ -28,6 +28,7 @@ var Users = function (opt)
     
     this.updtUser = function (data)
     {
+        /*
         var _this = this, last = this.container.find('li:last-child');
         last.addClass('leave');
         setTimeout(function ()
@@ -50,6 +51,7 @@ var Users = function (opt)
             });
             
         }, 1000);
+        */
     };
     
     return this;
@@ -57,8 +59,8 @@ var Users = function (opt)
 
 function init ()
 {
-    var widgetRoomRequested = roomID;
-    if(widgetRoomRequested == "") return;
+    var roomRequested = roomID;
+    if(roomRequested == "") return;
     
     var socket = io.connect('http://localhost:8333/'),
         users = null;
@@ -73,10 +75,7 @@ function init ()
     socket.on('update', function (data)
     {
         // new data are retrieve -> update the html
-        if( data == null || data == undefined ||
-            ((data.users == null || data.users == undefined) &&
-            (data.user == null || data.user == undefined))
-        ) return;
+        if( data == null || data == undefined || (data.user == null || data.user == undefined)) return;
         
         if(users == null) users = new Users();
         
@@ -85,7 +84,7 @@ function init ()
         
     });
     
-    socket.emit('widget', { room : widgetRoomRequested }); 
+    socket.emit('logged', { room : roomRequested }); 
 }
 
 $(document).ready(function ()

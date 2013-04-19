@@ -34,8 +34,14 @@ server.listen(CONF.PORT);
 /* Define default index router */
 app.get('/', routes.index);
 
+/* Define default index router */
+app.get('/:roomID', function ()
+{
+    console.log('YAY');
+});
+
 /* Define router for user who request a leaderboard */
-app.get('/leaderboard/:roomID', routes.leaderboard);
+app.get('/widget/:type/:roomID', routes.widget);
 
 /* For now POST method is not in the MODEL part of the app logic because it use the socket and not the REST API */
 app.post('/update', function (req, res)
@@ -50,7 +56,7 @@ app.post('/update', function (req, res)
     User.updtUsersPoints(req.body.username, req.body.points, function (err, resp)
     {
         io.sockets.in(bodyRequest.apiKey).emit('update', { "user" : req.body });
-        res.send(resp);
+        res.send(200);
     });
     
 });
@@ -58,10 +64,10 @@ app.post('/update', function (req, res)
 /* a user connect to our I/O server */
 io.sockets.on('connection', function (client)
 {
-	util.log("nouvelle utilisateur conncecté au leaderboard!"); // sortie console sur serveur
+	util.log("nouvelle utilisateur conncecté a un widget!"); // sortie console sur serveur
     
     // User request a leaderboard
-	client.on('leaderboard', function (data) // data must contain
+	client.on('widget', function (data) // data must contain
 	{
         if(!util.NotNull(data.room, "")) return;
         
@@ -85,10 +91,10 @@ io.sockets.on('connection', function (client)
 	{
         //io.sockets.in(client.currentRoom).emit('test'); // e: to broadcast stuff when a room user has left it
         if(util.NotNull(allClients[client.currentRoom]) && allClients[client.currentRoom].indexOf(client) >= 0)
-    	    allClients[client.currentRoom] = allClients[client.currentRoom].slice( // Delete user from room visited
-    	        allClients[client.currentRoom].indexOf(client)
-    	        , 1
-    	    );
+            allClients[client.currentRoom] = allClients[client.currentRoom].slice( // Delete user from room visited
+                allClients[client.currentRoom].indexOf(client)
+                , 1
+            );
     });
     
 });
