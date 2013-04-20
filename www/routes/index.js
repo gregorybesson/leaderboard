@@ -31,7 +31,7 @@ exports.err404 = function (req, res)
  */
 exports.connection = function (req, res)
 {
-    if(req.params.type)
+    if(req.params.roomID)
         res.render('index' + req.params.type , {
             title: req.params.roomID + "'s " + req.params.type,
             roomID : req.params.roomID
@@ -45,7 +45,7 @@ exports.connection = function (req, res)
  */
 exports.widget = function (req, res)
 {
-    if(req.params.type)
+    if(req.params.type && req.params.roomID)
         res.render('widget/' + req.params.type , {
             title: req.params.roomID + "'s " + req.params.type,
             roomID : req.params.roomID

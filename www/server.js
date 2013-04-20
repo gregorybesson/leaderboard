@@ -34,12 +34,6 @@ server.listen(CONF.PORT);
 /* Define default index router */
 app.get('/', routes.index);
 
-/* Define default index router */
-app.get('/:roomID', function ()
-{
-    console.log('YAY');
-});
-
 /* Define router for user who request a leaderboard */
 app.get('/widget/:type/:roomID', routes.widget);
 
@@ -61,12 +55,38 @@ app.post('/update', function (req, res)
     
 });
 
+/* For now POST method is not in the MODEL part of the app logic because it use the socket and not the REST API */
+app.post('/notification', function (req, res)
+{
+    var bodyRequest = req.body;
+    res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
+    
+    if(!util.NotNull(bodyRequest.apiKey, "") && !util.NotNull(bodyRequest.userId, "") && !(bodyRequest.apiKey in allClients)) {
+        res.send(bodyRequest.apiKey);
+        res.end('');
+        return;
+    }
+    for (var i=0; i < allClients[bodyRequest.apiKey].length; i++) {
+    	
+		if(allClients[bodyRequest.apiKey][i].userId == bodyRequest.userId){
+			//console.log("--------------------------------");
+			//console.log(io.sockets.in(bodyRequest.apiKey));
+			console.log("********************************");
+			allClients[bodyRequest.apiKey][i].emit('notification', {fuck : 'you'})
+		}
+    };
+    //allClients
+    //io.sockets.in(bodyRequest.apiKey).emit('notification', { "html" : '<div>html</div>' });
+    res.send(200);
+    res.end('');
+});
+
 /* a user connect to our I/O server */
 io.sockets.on('connection', function (client)
 {
 	util.log("nouvelle utilisateur conncecté a un widget!"); // sortie console sur serveur
     
-    // User request a leaderboard
+    // User request a widget
 	client.on('widget', function (data) // data must contain
 	{
         if(!util.NotNull(data.room, "")) return;
@@ -84,6 +104,19 @@ io.sockets.on('connection', function (client)
             if (userData.err) throw userData.err;
             client.emit('update', userData); // send the leaderboard to the user who just connect
         });
+	});
+	
+	client.on('logged', function (data) // data must contain
+	{
+        if(!util.NotNull(data.room, "") || !util.NotNull(data.user, "")) return;
+        // push user to the room Array ( and create hes room in the Array if it doesn't exist )
+        if(!util.NotNull(allClients[data.room])) allClients[data.room] = [];
+        allClients[data.room].push(client);
+        
+	    client.join(data.room); // Make the client user join the requested room
+	    client.currentRoom = data.room; // Save hes room name so he know it
+        client.userId = data.user;
+	    client.emit('notification', {test : 'test'});
 	});
 	
 	// Listen for connection close to remove the user from the room he was
