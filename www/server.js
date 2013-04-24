@@ -66,15 +66,17 @@ app.post('/notification', function (req, res)
         res.end('');
         return;
     }
-    for (var i=0; i < allClients[bodyRequest.apiKey].length; i++) {
-    	
-		if(allClients[bodyRequest.apiKey][i].userId == bodyRequest.userId){
-			//console.log("--------------------------------");
-			//console.log(io.sockets.in(bodyRequest.apiKey));
-			console.log("********************************");
-			allClients[bodyRequest.apiKey][i].emit('notification', {fuck : 'you'})
-		}
-    };
+	if( util.NotNull(bodyRequest) &&
+		util.NotNull(bodyRequest.html) &&
+		util.NotNull(bodyRequest.apiKey) &&
+		util.NotNull(bodyRequest.userId)) // If is enough to send notif
+	    for (var i=0; i < allClients[bodyRequest.apiKey].length; i++) {
+			if(allClients[bodyRequest.apiKey][i].userId == bodyRequest.userId){
+				//console.log("--------------------------------");
+				//console.log(io.sockets.in(bodyRequest.apiKey));
+				allClients[bodyRequest.apiKey][i].emit('notification', bodyRequest.html);
+			}
+	    };
     //allClients
     //io.sockets.in(bodyRequest.apiKey).emit('notification', { "html" : '<div>html</div>' });
     res.send(200);
@@ -116,7 +118,7 @@ io.sockets.on('connection', function (client)
 	    client.join(data.room); // Make the client user join the requested room
 	    client.currentRoom = data.room; // Save hes room name so he know it
         client.userId = data.user;
-	    client.emit('notification', {test : 'test'});
+	    //client.emit('notification', {test : 'test'});
 	});
 	
 	// Listen for connection close to remove the user from the room he was

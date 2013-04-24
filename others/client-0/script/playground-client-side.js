@@ -24,13 +24,6 @@ PG_U.notNull = function (el, optional)
     return (el !== null && el !== undefined);
 };
 
-PG_U.AddEvent = function (html_element, event_name, event_function) 
-{       
-   if(html_element.attachEvent) //Internet Explorer
-      html_element.attachEvent("on" + event_name, function() {event_function.call(html_element);}); 
-   else if(html_element.addEventListener) //Firefox & company
-      html_element.addEventListener(event_name, event_function, false); //don't need the 'call' trick because in FF everything already works in the right way          
-} 
 /****************************************************************************************************************************
 *  ___   _                  ___                                _      ___   _   _                _         _     ___   ___  *
 * | _ \ | |  __ _   _  _   / __|  _ _   ___   _  _   _ _    __| |    / __| | | (_)  ___   _ _   | |_      /_\   | _ \ |_ _| *
@@ -81,10 +74,10 @@ jQuery.noConflict();
 		        // ask for the 10 last user in databases from a specifique room
 		    });
 		    
-		    
-		    socket.on('notification', function (data)
+		    socket.on('notification', function (data, d, dd)
 		    {
-		        console.log(data);
+    			alert(data.html);
+		        $('#container').append(d);
 		    });
 			
 		    socket.emit('logged', { room : PG_C.api_key, user : PG_C.user }); 
