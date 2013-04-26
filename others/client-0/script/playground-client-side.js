@@ -34,16 +34,29 @@ PG_U.notNull = function (el, optional)
 var PG_C = PG_C || {};
 PG_C.ready;
 
+/**
+ * Static 
+ */
 PG_C.route = {
-    server : 'http://localhost:8333/'
+    server : 'http://192.168.1.108:8333/'
 };
 
+/**
+ * For client to register
+ * @param {String} api_key
+ * @param {String} user
+ * @return nothing
+ */
 PG_C.register = function (api_key, user)
 {
     this.api_key = api_key;
     this.user = user;
 };
 
+/**
+ * Check if register has been done
+ * @return boolean, ofcourse true if is allowed 
+ */
 PG_C.isAllowed = function ()
 {
     if(!PG_U.notNull(this.api_key)) throw new Error('Use register() to register your API key first');
@@ -56,8 +69,9 @@ jQuery.noConflict();
 	$(function ()
 	{
 		if(PG_U.notNull(PG_C.ready)) PG_C.ready();
+		else return;
 		
-		$.getScript(PG_C.route.server + "socket.io/socket.io.js")
+		$.getScript(PG_C.route.server + "socket.io/socket.io.js") // request socket.io script to create persistent connection to node server
 			.done(function(script, textStatus) { PG_U.init(); })
 			.fail(function(jqxhr, settings, exception) { console.log('something wrong happened'); });
 		
@@ -68,18 +82,46 @@ jQuery.noConflict();
 		    var socket = io.connect(PG_C.route.server),
 		        users = null;
 		    
+		    /**
+		     * Wait for node.js to say it's alright we're connected 
+		     */
 		    socket.on('connect', function ()
 		    {
 		        console.log('connect');
-		        // ask for the 10 last user in databases from a specifique room
 		    });
 		    
+		    /**
+		     * Wait for notification from node.js server 
+		     */
 		    socket.on('notification', function (data)
 		    {
-		        //if(!notNull(data) && !notNull(data.html))
-		        	$('body').append(data.html);
+		        var $notif = null,
+    		        $css = null,
+    		        durationTimeout = null;
+    		    
+                if(!PG_U.notNull(data)) return; // handle empty notification
+                
+                if(PG_U.notNull(data.style)){ // add stylesheet
+                    $css = $('<style type="text/css" media="screen">' + data.style + '</style>');
+                    $('body').append($css);
+                }
+		        if(PG_U.notNull(data.html)){ // add html content
+		            $notif = $(data.html);
+                    $('body').append($notif);
+		        }
+                if(PG_U.notNull(data.duration)){ // do some extra job if notification has to disappear
+                    durationTimeout = setTimeout(function ()
+                    {
+                        if(PG_U.notNull($notif)) $notif.remove();
+                        if(PG_U.notNull($css)) $css.remove();
+                        clearTimeout(durationTimeout);
+                    }, data.duration);
+                }
 		    });
 			
+			/**
+			 * tell node.js to connect and wait -> scroll up : socket.on('connect'....
+			 */
 		    socket.emit('logged', { room : PG_C.api_key, user : PG_C.user }); 
 		}
 	});
