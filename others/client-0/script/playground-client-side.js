@@ -74,10 +74,10 @@ jQuery.noConflict();
 		        // ask for the 10 last user in databases from a specifique room
 		    });
 		    
-		    socket.on('notification', function (data, d, dd)
+		    socket.on('notification', function (data)
 		    {
-    			alert(data.html);
-		        $('#container').append(d);
+		        //if(!notNull(data) && !notNull(data.html))
+		        	$('body').append(data.html);
 		    });
 			
 		    socket.emit('logged', { room : PG_C.api_key, user : PG_C.user }); 

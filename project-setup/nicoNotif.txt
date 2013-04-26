@@ -2,9 +2,15 @@ $.ajax({
   type: "POST",
   url: "http://playground.dev:8333/notification",
   data: {
-	  apiKey: "key_first",
-	  userId : "user_1",
-	  html : '<div class="nice-notif" style="position:absolute; top=10px;right="10px;padding=10px 20px;background:#333;color=#FFF;">nice dude</div>'
+	  apiKey :"key_first",
+	  userId :"user_1",
+	  html   :"<div class='nice-notif'>nice! dude</div>",
+	  styles :"'style='-webkit-border-radius: 5px;'" +
+			  "border-radius: 5px;position:absolute;" +
+			  "top:10px;right:10px;" +
+			  padding:10px 20px;" +
+			  background:rgba(0,0,0,0.3);" +
+			  color:#FFF;'"
   }
 }).done(function( msg ) {
   console.log( msg );
