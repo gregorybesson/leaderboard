@@ -7,7 +7,7 @@ module.exports = (function(){
             return {
                 PORT        : 8333,
                 DEBUG       : true,
-                IO_LOG      : false,
+                IO_LOG      : true,
                 IO_ORIGINS  : '*:*',
                 DB : {
                     PATH    : 'http://localhost/github/leaderboard/db/db.php'
