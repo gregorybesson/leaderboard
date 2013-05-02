@@ -10,6 +10,7 @@ var CONF = require('./config/config.js'),
 /* APPLICATION VARIABLES */
     allClients = [];
 
+util.log("Configure Express framework");
 
 /* Server */
 app.configure(function ()
@@ -81,6 +82,8 @@ app.post('/notification', function (req, res)
     res.end('');
 });
 
+util.log("Configure sockets.io");
+
 /* a user connect to our I/O server */
 io.sockets.on('connection', function (client)
 {
@@ -131,3 +134,5 @@ io.sockets.on('connection', function (client)
     });
     
 });
+
+util.log("server started on port :" + CONF.PORT);
