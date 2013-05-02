@@ -39,7 +39,7 @@ PG_C.ready;
  */
 PG_C.route = {
     //server : 'http://192.168.1.108:8333/'
-    server : 'http://ic.adfab.fr:88/mouthnode/'
+    server : 'http://ic.adfab.fr:88/'
 };
 
 /**
