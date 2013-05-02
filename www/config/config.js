@@ -16,7 +16,7 @@ module.exports = (function(){
         break;
         case 'production' :
             return {
-                PORT        : 8080,
+                PORT        : 88,
                 DEBUG       : false,
                 IO_LOG      : false,
                 IO_ORIGINS  : '*:*',
