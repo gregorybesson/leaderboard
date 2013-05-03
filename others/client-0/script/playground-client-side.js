@@ -24,6 +24,53 @@ PG_U.notNull = function (el, optional)
     return (el !== null && el !== undefined);
 };
 
+PG_U.getHostname = function (url)
+{
+    var m = url.match(/^http:\/\/[^/]+/);
+    return m ? m[0] : null;
+}
+
+PG_U.getCookie = function (sName)
+{
+var oRegex = new RegExp("(?:; )?" + sName + "=([^;]*);?");
+
+return (oRegex.test(document.cookie)) ? decodeURIComponent(RegExp["$1"]) : null;
+/*
+if (oRegex.test(document.cookie)) {
+return decodeURIComponent(RegExp["$1"]);
+} else {
+return null;
+}
+*/
+}
+
+PG_U.setCookie = function (name, value)
+{
+    var today = new Date(), expires = new Date();
+    expires.setTime(today.getTime() + (365*24*60*60*1000));
+    document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + expires.toGMTString();
+}
+
+PG_U.createUniqueID = function (str)
+{
+    var today = new Date(),
+        checkSum = function (arr)
+        {
+            var arrReturn = '';
+            for (var i = arr.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var tmp = arr.charAt(i);
+                arrReturn[i] += arr.charAt(j);
+                arrReturn[j] += tmp;
+                console.log( arr.charAt(j) );
+                //console.log(arrReturn);
+            }
+            return arrReturn;
+        }( 'abcdefghijklmnopkrstuvwxyz123456789' );
+    console.log(checkSum);
+    return today.getTime();
+}
+
 /****************************************************************************************************************************
 *  ___   _                  ___                                _      ___   _   _                _         _     ___   ___  *
 * | _ \ | |  __ _   _  _   / __|  _ _   ___   _  _   _ _    __| |    / __| | | (_)  ___   _ _   | |_      /_\   | _ \ |_ _| *
@@ -38,8 +85,8 @@ PG_C.ready;
  * Static 
  */
 PG_C.route = {
-    //server : 'http://192.168.1.108:88/'
-    server : 'http://ic.adfab.fr:88/'
+    server : 'http://192.168.1.108:88/'
+    //server : 'http://ic.adfab.fr:88/'
 };
 
 /**
@@ -69,14 +116,21 @@ jQuery.noConflict();
 (function($, PG_C) {
 	$(function ()
 	{
-		if(PG_U.notNull(PG_C.ready)) PG_C.ready();
-		else return;
+	    var hostName = PG_U.getHostname(window.location.href);
+		//if(PG_U.notNull(PG_C.ready)) PG_C.ready();
+		//else return;
 		
 		$.getScript(PG_C.route.server + "socket.io/socket.io.js") // request socket.io script to create persistent connection to node server
-			.done(function(script, textStatus) { PG_U.init(); })
+			.done(function(script, textStatus) { PG_C.getUser(); })
 			.fail(function(jqxhr, settings, exception) { console.log('something wrong happened'); });
 		
-		PG_U.init = function ()
+		PG_C.getUser = function ()
+		{
+		    PG_U.setCookie(PG_U.getCookie(hostName));
+		    alert( PG_U.getCookie(hostName) );
+		};
+		
+		PG_C.init = function ()
 		{
 		    if(!PG_C.isAllowed()) return;
 		    
@@ -110,6 +164,11 @@ jQuery.noConflict();
 		            $notif = $(data.html);
                     $('body').append($notif);
 		        }
+                if(PG_U.notNull(data.script)){ // custom script to inject
+                    $.getScript(data.script)
+                        .done(function(script, textStatus) { console.log('nice'); })
+                        .fail(function(jqxhr, settings, exception) { console.log('script not loading'); });
+                }
                 if(PG_U.notNull(data.duration)){ // do some extra job if notification has to disappear
                     durationTimeout = setTimeout(function ()
                     {

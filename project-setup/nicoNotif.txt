@@ -3,17 +3,20 @@ $.ajax({
     //url: "http://playground.dev:88/notification",
     url: "http://ic.adfab.fr:88/mouthnode",
     data: {
-        apiKey :"key_first",
-        userId :"user_1",
-        html   :"<div class='nice-notif'>nice! dude</div>",
-        style  :".nice-notif{-webkit-border-radius: 5px;" +
-                "border-radius: 5px;position:absolute;" +
-                "top:10px;right:10px;" +
-                "padding:10px 20px;" +
-                "background:rgba(0,0,0,0.3);" +
-                "color:#FFF;}",
-        duration : 2000
+        apiKey      : "key_first",
+        userId      : "user_1",
+        container   : "body",
+        html        : "<div class='nice-notif'>nice! dude</div>",
+        style       : ".nice-notif{-webkit-border-radius: 5px;" +
+                      "border-radius: 5px;position:absolute;" +
+                      "top:10px;right:10px;" +
+                      "padding:10px 20px;" +
+                      "background:rgba(0,0,0,0.3);" +
+                      "color:#FFF;}",
+        duration : 2000,
+        script : 'http://localhost/play-ground/client-0/script/inject-script.js'
     }
-}).done(function( msg ) {
+})
+.done(function( msg ) {
     //console.log( msg );
 });
