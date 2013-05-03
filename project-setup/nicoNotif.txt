@@ -1,6 +1,6 @@
 $.ajax({
     type: "POST",
-    //url: "http://playground.dev:8333/notification",
+    //url: "http://playground.dev:88/notification",
     url: "http://ic.adfab.fr:88/mouthnode",
     data: {
         apiKey :"key_first",

@@ -59,6 +59,7 @@ app.post('/update', function (req, res)
 /* For now POST method is not in the MODEL part of the app logic because it use the socket and not the REST API */
 app.post('/notification', function (req, res)
 {
+    //console.log(req.headers.origin);
     var bodyRequest = req.body;
     res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
     
@@ -78,7 +79,14 @@ app.post('/notification', function (req, res)
 	    };
     //allClients
     //io.sockets.in(bodyRequest.apiKey).emit('notification', { "html" : '<div>html</div>' });
-    res.send(200);
+    var headers = {};
+    headers["Access-Control-Allow-Origin"] = "*";
+    headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
+    headers["Access-Control-Allow-Credentials"] = true;
+    headers["Access-Control-Max-Age"] = '86400'; // 24 hours
+    headers["Access-Control-Allow-Headers"] = "X-Requested-With, Access-Control-Allow-Origin, X-HTTP-Method-Override, Content-Type, Authorization, Accept";
+    res.writeHead(200, headers);
+    //res.send(200);
     res.end('');
 });
 

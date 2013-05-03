@@ -38,8 +38,8 @@ PG_C.ready;
  * Static 
  */
 PG_C.route = {
-    //server : 'http://192.168.1.108:8333/'
-    server : 'http://ic.adfab.fr:88/'
+    server : 'http://192.168.1.108:88/'
+    //server : 'http://ic.adfab.fr:88/'
 };
 
 /**
