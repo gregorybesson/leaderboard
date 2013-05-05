@@ -24,9 +24,12 @@ PG_U.notNull = function (el, optional)
     return (el !== null && el !== undefined);
 };
 
-PG_U.getHostname = function (url)
+/**
+ * @return {String}
+ */
+PG_U.getHostname = function ()
 {
-    var m = url.match(/^http:\/\/[^/]+/);
+    var m = window.location.href.match(/^http:\/\/[^/]+/);
     return m ? m[0] : null;
 }
 
@@ -51,24 +54,23 @@ PG_U.setCookie = function (name, value)
     document.cookie = name + "=" + encodeURIComponent(value) + ";expires=" + expires.toGMTString();
 }
 
+/**
+ * Function to modify later
+ * Create unique hash ( need to make it better )
+ */
 PG_U.createUniqueID = function (str)
 {
     var today = new Date(),
         checkSum = function (arr)
         {
-            var arrReturn = '';
-            for (var i = arr.length - 1; i > 0; i--) {
-                var j = Math.floor(Math.random() * (i + 1));
-                var tmp = arr.charAt(i);
-                arrReturn[i] += arr.charAt(j);
-                arrReturn[j] += tmp;
-                console.log( arr.charAt(j) );
-                //console.log(arrReturn);
+            var arrReturn = '', i, j, tmp;
+            for (i = arr.length - 1; i > 0; i--) {
+                arrReturn += arr.charAt( Math.floor(Math.random() * (i + 1)) );
+                arrReturn += arr.charAt(i);
             }
-            return arrReturn;
-        }( 'abcdefghijklmnopkrstuvwxyz123456789' );
-    console.log(checkSum);
-    return today.getTime();
+            return arrReturn.slice(0, 20);
+        }( 'abcdefghijklmnopkrstuvwxyz*-()#&' + today.getTime() + PG_U.getHostname() );
+    return checkSum;
 }
 
 /****************************************************************************************************************************
@@ -85,8 +87,9 @@ PG_C.ready;
  * Static 
  */
 PG_C.route = {
-    server : 'http://192.168.1.108:88/'
-    //server : 'http://ic.adfab.fr:88/'
+	server : 'http://192.168.1.34:88/', // local home
+    //server : 'http://192.168.1.108:88/' // local work
+    //server : 'http://ic.adfab.fr:88/' // server IC
 };
 
 /**
@@ -98,7 +101,21 @@ PG_C.route = {
 PG_C.register = function (api_key, user)
 {
     this.api_key = api_key;
-    this.user = user;
+    console.log("** API KEY ** : " + this.api_key);
+    this.hostName = PG_U.getHostname();
+    if(PG_U.notNull(user)){
+    	this.user = user;
+    	console.log("** Non Anonymous user ** : " + this.user);
+    }
+	else if( !PG_U.notNull(PG_U.getCookie(this.hostName)) ){
+		this.user = PG_U.createUniqueID();
+		PG_U.setCookie(this.hostName, this.user);
+    	console.log("** New anonymous user ** : " + this.user);
+	}
+	else{
+		this.user = PG_U.getCookie(this.hostName);
+		console.log("** Anonymous username from cookie ** : " + this.user);
+	}
 };
 
 /**
@@ -116,19 +133,12 @@ jQuery.noConflict();
 (function($, PG_C) {
 	$(function ()
 	{
-	    var hostName = PG_U.getHostname(window.location.href);
-		//if(PG_U.notNull(PG_C.ready)) PG_C.ready();
-		//else return;
+		if(PG_U.notNull(PG_C.ready)) PG_C.ready();
+		else return;
 		
 		$.getScript(PG_C.route.server + "socket.io/socket.io.js") // request socket.io script to create persistent connection to node server
-			.done(function(script, textStatus) { PG_C.getUser(); })
+			.done(function(script, textStatus) { PG_C.init(); })
 			.fail(function(jqxhr, settings, exception) { console.log('something wrong happened'); });
-		
-		PG_C.getUser = function ()
-		{
-		    PG_U.setCookie(PG_U.getCookie(hostName));
-		    alert( PG_U.getCookie(hostName) );
-		};
 		
 		PG_C.init = function ()
 		{
