@@ -35,16 +35,8 @@ PG_U.getHostname = function ()
 
 PG_U.getCookie = function (sName)
 {
-var oRegex = new RegExp("(?:; )?" + sName + "=([^;]*);?");
-
-return (oRegex.test(document.cookie)) ? decodeURIComponent(RegExp["$1"]) : null;
-/*
-if (oRegex.test(document.cookie)) {
-return decodeURIComponent(RegExp["$1"]);
-} else {
-return null;
-}
-*/
+    var oRegex = new RegExp("(?:; )?" + sName + "=([^;]*);?");
+    return (oRegex.test(document.cookie)) ? decodeURIComponent(RegExp["$1"]) : null;
 }
 
 PG_U.setCookie = function (name, value)
@@ -87,9 +79,9 @@ PG_C.ready;
  * Static 
  */
 PG_C.route = {
-	server : 'http://192.168.1.34:88/', // local home
+	//server : 'http://192.168.1.34:88/', // local home
     //server : 'http://192.168.1.108:88/' // local work
-    //server : 'http://ic.adfab.fr:88/' // server IC
+    server : 'http://ic.adfab.fr:88/' // server IC
 };
 
 /**
