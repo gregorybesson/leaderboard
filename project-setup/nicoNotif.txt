@@ -1,10 +1,10 @@
 $.ajax({
     type: "POST",
     //url: "http://playground.dev:88/notification",
-    url: "http://ic.adfab.fr:88/mouthnode",
+    url: "http://ic.adfab.fr:88/notification",
     data: {
         apiKey      : "key_first",
-        userId      : "user_1",
+        userId      : "hr#ft.jbjapfkd/a..7c",
         container   : "body",
         html        : "<div class='nice-notif'>nice! dude</div>",
         style       : ".nice-notif{-webkit-border-radius: 5px;" +
@@ -14,7 +14,8 @@ $.ajax({
                       "background:rgba(0,0,0,0.3);" +
                       "color:#FFF;}",
         duration : 2000,
-        script : 'http://localhost/play-ground/client-0/script/inject-script.js'
+        //script : 'http://localhost/play-ground/client-0/script/inject-script.js'
+        //script : 'http://ic.adfab.fr/mouthnode/leaderboard/others/client-0/script/inject-script.js'
     }
 })
 .done(function( msg ) {
