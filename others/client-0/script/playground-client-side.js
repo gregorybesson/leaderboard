@@ -164,7 +164,8 @@ jQuery.noConflict();
                 }
 		        if(PG_U.notNull(data.html)){ // add html content
 		            $notif = $(data.html);
-                    $('body').append($notif);
+		            if(PG_U.notNull(data.container)) $(data.container).append($notif);
+                    else $('body').append($notif);
 		        }
                 if(PG_U.notNull(data.script)){ // custom script to inject
                     $.getScript(data.script)
