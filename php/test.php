@@ -7,7 +7,7 @@ $curlConfig = array(
     CURLOPT_POSTFIELDS     => json_encode(
 		array(
 			"apiKey" => "key_first",
-			"userId" => ":tos0oihbl0akclorlt/",
+			"userId" => "cr/fh.sbmabf-dka8.:c",
 			"container" => "body",
 			"html" => "<div >test</div>"
 		)
