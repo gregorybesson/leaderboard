@@ -6,8 +6,8 @@ module.exports = (function(){
         case 'development' :
             return {
                 PORT        : 88,
-                DEBUG       : true,
-                IO_LOG      : true,
+                DEBUG       : false,
+                IO_LOG      : false,
                 IO_ORIGINS  : '*:*',
                 DB : {
                     PATH    : 'http://localhost/github/leaderboard/db/db.php'
@@ -17,8 +17,8 @@ module.exports = (function(){
         case 'production' :
             return {
                 PORT        : 88,
-                DEBUG       : true,
-                IO_LOG      : true,
+                DEBUG       : false,
+                IO_LOG      : false,
                 IO_ORIGINS  : '*:*',
                 DB : {
                     PATH    : 'http://localhost/github/leaderboard/db/db.php'

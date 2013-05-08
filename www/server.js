@@ -59,8 +59,16 @@ app.post('/update', function (req, res)
 /* For now POST method is not in the MODEL part of the app logic because it use the socket and not the REST API */
 app.post('/notification', function (req, res)
 {
-    //console.log(req.headers.origin);
     var bodyRequest = req.body;
+    for (var i in bodyRequest)
+	{
+		try{
+			if(util.NotNull(JSON.parse(i).apiKey)){
+				bodyRequest = JSON.parse(i);
+			}
+		}
+		catch(e){}
+	}
     res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
     
     if(!util.NotNull(bodyRequest.apiKey, "") && !util.NotNull(bodyRequest.userId, "") && !(bodyRequest.apiKey in allClients)) {
