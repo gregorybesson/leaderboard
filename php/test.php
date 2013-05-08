@@ -1,6 +1,7 @@
 <?php
 $ch = curl_init();
 $curlConfig = array(
+    //CURLOPT_URL            => "http://playground.dev:88/notification",
     CURLOPT_URL            => "http://ic.adfab.fr:88/notification",
     CURLOPT_POST           => true,
     CURLOPT_RETURNTRANSFER => true,
