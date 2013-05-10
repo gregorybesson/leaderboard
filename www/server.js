@@ -10,7 +10,7 @@ var CONF = require('./config/config.js'),
 /* APPLICATION VARIABLES */
     allClients = [];
 
-util.log("Configure Express framework");
+util.log("Configure Express framework\n");
 
 /* Server */
 app.configure(function ()
@@ -95,7 +95,7 @@ util.log("Configure sockets.io");
 /* a user connect to our I/O server */
 io.sockets.on('connection', function (client)
 {
-	util.log("nouvelle utilisateur conncecté a un widget!"); // sortie console sur serveur
+	util.log("nouvelle utilisateur conncecté a un widget!\n"); // sortie console sur serveur
     
     // User request a widget
 	client.on('widget', function (data) // data must contain
@@ -143,4 +143,4 @@ io.sockets.on('connection', function (client)
     
 });
 
-util.log("server started on port :" + CONF.PORT);
+util.log("server started on port :" + CONF.PORT + "\n");
