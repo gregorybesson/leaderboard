@@ -60,17 +60,20 @@ app.post('/update', function (req, res)
 app.post('/notification', function (req, res)
 {
     var bodyRequest = req.body;
+    //console.log(bodyRequest);
+    //console.log(JSON.parse(bodyRequest));
     for (var i in bodyRequest)
 	{
 		try{
+			//console.log(JSON.parse(i));
 			if(util.NotNull(JSON.parse(i).apiKey)){
 				bodyRequest = JSON.parse(i);
 			}
 		}
 		catch(e){}
 	}
-    res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
     
+    res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
     if(!util.NotNull(bodyRequest.apiKey, "") && !util.NotNull(bodyRequest.userId, "") && !(bodyRequest.apiKey in allClients)) {
         res.send(bodyRequest.apiKey);
         res.end('');

@@ -153,18 +153,17 @@ jQuery.noConflict();
 		    socket.on('notification', function (data)
 		    {
 		    	console.log('just got data!');
+		    	console.log(data);
 		        var $notif = null,
     		        $css = null,
     		        durationTimeout = null;
     		    
-                if(!PG_U.notNull(data)) return; // handle empty notification
-                
                 if(PG_U.notNull(data.style)){ // add stylesheet
                     $css = $('<style type="text/css" media="screen">' + data.style + '</style>');
                     $('body').append($css);
                 }
 		        if(PG_U.notNull(data.html)){ // add html content
-		            $notif = $(data.html);
+		            $notif = data.html
 		            if(PG_U.notNull(data.container)) $(data.container).append($notif);
                     else $('body').append($notif);
 		        }
