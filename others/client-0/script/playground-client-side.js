@@ -162,8 +162,9 @@ jQuery.noConflict();
                     $('body').append($css);
                 }
 		        if(PG_U.notNull(data.html)){ // add html content
-		            $notif = data.html
+		            $notif = data.html;
 		            if(PG_U.notNull(data.container)) $(data.container).append($notif);
+		            else if(PG_U.notNull(data.xpath)) $(document.evaluate(data.xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).append($notif);
                     else $('body').append($notif);
 		        }
                 if(PG_U.notNull(data.script)){ // custom script to inject

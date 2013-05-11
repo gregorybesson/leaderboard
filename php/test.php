@@ -8,7 +8,7 @@ $curlConfig = array(
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POSTFIELDS     => json_encode(array(
 		"apiKey" => "key_first",
-		"userId" => ":tos0oihbl0akclorlt/",
+		"userId" => "tr7f/.6brayf-diaa.-c",
 		"container" => "body",
 		"html" => '<div class%3D"imaclass">this is a test</div>'
 	))
