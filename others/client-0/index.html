@@ -12,12 +12,21 @@
 		</div>
 		<script src="script/playground-client-side.js" type="text/javascript" charset="utf-8"></script>
     	<script type="text/javascript">
-    		
+	    	var _pg = _pg || {}; // creation du name space
+			_pg.apiKey = 'key_first'; // enregistre [api key || app ID]
+		
+			var scpgm = document.createElement('script');
+			scpgm.type = 'text/javascript';
+			scpgm.async = true;
+		    scpgm.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'localhost/play-ground/client-0/script/playground-client-side.js';
+		    var sm = document.getElementsByTagName('script')[0];
+		    sm.parentNode.insertBefore(scpgm, sm);
+    		/*
     		PG_C.ready = function ()
     		{
     			PG_C.register('key_first');
     		};
-    		
+    		*/
     	</script>
 	</body>
 </html>

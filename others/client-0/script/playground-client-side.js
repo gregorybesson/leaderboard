@@ -20,8 +20,8 @@ var PG_U = PG_U || {};
  */
 PG_U.notNull = function (el, optional)
 {
-    if(optional !== null && optional !== undefined) return (el !== null && el !== undefined && el !== optional);
-    return (el !== null && el !== undefined);
+    if(optional !== null && typeof optional !== 'undefined') return (el !== null && typeof el == 'undefined' && el !== optional);
+    return (el !== null && typeof el !== 'undefined');
 };
 
 /**
@@ -79,9 +79,9 @@ PG_C.ready;
  * Static 
  */
 PG_C.route = {
-	//server : 'http://192.168.1.34:88/', // local home
+	server : 'http://192.168.1.34:88/', // local home
     //server : 'http://192.168.1.108:88/' // local work
-    server : 'http://ic.adfab.fr:88/' // server IC
+    //server : 'http://ic.adfab.fr:88/' // server IC
 };
 
 /**
@@ -93,21 +93,7 @@ PG_C.route = {
 PG_C.register = function (api_key, user)
 {
     this.api_key = api_key;
-    console.log("** API KEY ** : " + this.api_key);
-    this.hostName = PG_U.getHostname();
-    if(PG_U.notNull(user)){
-    	this.user = user;
-    	console.log("** Non Anonymous user ** : " + this.user);
-    }
-	else if( !PG_U.notNull(PG_U.getCookie(this.hostName)) ){
-		this.user = PG_U.createUniqueID();
-		PG_U.setCookie(this.hostName, this.user);
-    	console.log("** New anonymous user ** : " + this.user);
-	}
-	else{
-		this.user = PG_U.getCookie(this.hostName);
-		console.log("** Anonymous username from cookie ** : " + this.user);
-	}
+    this.user = user;
 };
 
 /**
@@ -125,14 +111,22 @@ jQuery.noConflict();
 (function($, PG_C) {
 	$(function ()
 	{
+		var user;
+		/*
 		if(PG_U.notNull(PG_C.ready)) PG_C.ready();
 		else return;
+		*/
 		
-		$.getScript(PG_C.route.server + "socket.io/socket.io.js") // request socket.io script to create persistent connection to node server
-			.done(function(script, textStatus) { PG_C.init(); })
-			.fail(function(jqxhr, settings, exception) { console.log('something wrong happened'); });
+		PG_C.init = function (user)
+		{
+		    console.log("** API KEY ** : " + _pg.apiKey);
+			PG_C.register(_pg.apiKey, user); // regiester api key
+			$.getScript(PG_C.route.server + "socket.io/socket.io.js") // request socket.io script to create persistent connection to node server
+				.done(function(script, textStatus) { PG_C.start(); })
+				.fail(function(jqxhr, settings, exception) { console.log('something wrong happened'); });
+		};
 		
-		PG_C.init = function ()
+		PG_C.start = function ()
 		{
 		    if(!PG_C.isAllowed()) return;
 		    
@@ -187,5 +181,32 @@ jQuery.noConflict();
 			 */
 		    socket.emit('logged', { room : PG_C.api_key, user : PG_C.user }); 
 		}
+		
+		if((typeof scpge !== 'undefined' && scpge !== null) && PG_U.notNull(_pg) && PG_U.notNull(_pg.apiKey)) {
+			// logic scpge
+			// request anonymous user
+			// user = getUserFromCookie() ???????;
+			PG_C.init(/* user */); // tell go get ready
+		}
+		else if(PG_U.notNull(_pg) && PG_U.notNull(_pg.apiKey)) {
+			// create anonymous user
+		    this.hostName = PG_U.getHostname();
+		    if(PG_U.notNull(user)){
+		    	user = user;
+		    	console.log("** Non Anonymous user ** : " + user);
+		    }
+			else if( !PG_U.notNull(PG_U.getCookie(this.hostName)) ){
+				user = PG_U.createUniqueID();
+				PG_U.setCookie(this.hostName, user);
+		    	console.log("** New anonymous user ** : " + user);
+			}
+			else{
+				user = PG_U.getCookie(this.hostName);
+				console.log("** Anonymous username from cookie ** : " + user);
+			}
+			console.log(PG_C);
+			PG_C.init(user); // tell go get ready
+		}
+		
 	});
 })(jQuery, PG_C);
