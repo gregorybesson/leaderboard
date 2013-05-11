@@ -1,16 +1,16 @@
 <?php
 $ch = curl_init();
 $curlConfig = array(
-    //CURLOPT_URL            => "http://playground.dev:88/notification",
-    CURLOPT_URL            => "http://ic.adfab.fr:88/notification",
+    CURLOPT_URL            => "http://playground.dev:88/notification",
+    //CURLOPT_URL            => "http://ic.adfab.fr:88/notification",
     CURLOPT_POST           => true,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POSTFIELDS     => json_encode(
 		array(
 			"apiKey" => "key_first",
-			"userId" => "cr/fh.sbmabf-dka8.:c",
+			"userId" => ":tos0oihbl0akclorlt/",
 			"container" => "body",
-			"html" => "<div >test</div>"
+			"html" => "fuck"
 		)
     )
 );

@@ -4,7 +4,7 @@ $.ajax({
     url: "http://ic.adfab.fr:88/notification",
     data: {
         apiKey      : "key_first",
-        userId      : "hr#ft.jbjapfkd/a..7c",
+        userId      : "cr/fh.sbmabf-dka8.:c",
         container   : "body",
         html        : "<div class='nice-notif'>nice! dude</div>",
         style       : ".nice-notif{-webkit-border-radius: 5px;" +
