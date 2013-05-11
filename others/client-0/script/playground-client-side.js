@@ -153,7 +153,6 @@ jQuery.noConflict();
 		    socket.on('notification', function (data)
 		    {
 		    	console.log('just got data!');
-		    	console.log(data);
 		        var $notif = null,
     		        $css = null,
     		        durationTimeout = null;

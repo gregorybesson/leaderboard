@@ -65,7 +65,6 @@ app.post('/notification', function (req, res)
     for (var i in bodyRequest)
 	{
 		try{
-			//console.log(JSON.parse(i));
 			if(util.NotNull(JSON.parse(i).apiKey)){
 				bodyRequest = JSON.parse(i);
 			}
