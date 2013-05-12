@@ -120,6 +120,7 @@ jQuery.noConflict();
 		PG_C.init = function (user)
 		{
 		    console.log("** API KEY ** : " + _pg.apiKey);
+	    	console.log("** USER ID ** : " + user);
 			PG_C.register(_pg.apiKey, user); // regiester api key
 			$.getScript(PG_C.route.server + "socket.io/socket.io.js") // request socket.io script to create persistent connection to node server
 				.done(function(script, textStatus) { PG_C.start(); })
@@ -186,23 +187,26 @@ jQuery.noConflict();
 			// logic scpge
 			// request anonymous user
 			// user = getUserFromCookie() ???????;
-			PG_C.init(/* user */); // tell go get ready
+			$(window).on('earsReady', function (e)
+			{
+				if(PG_U.notNull(e.originalEvent.data) && PG_U.notNull(e.originalEvent.data.apiKey) && PG_U.notNull(e.originalEvent.data.uid)){
+					PG_C.init(e.originalEvent.data.uid);
+				}
+			});
+			//PG_C.init(/* user */); // tell go get ready
 		}
 		else if(PG_U.notNull(_pg) && PG_U.notNull(_pg.apiKey)) {
 			// create anonymous user
 		    this.hostName = PG_U.getHostname();
 		    if(PG_U.notNull(user)){
 		    	user = user;
-		    	console.log("** Non Anonymous user ** : " + user);
 		    }
 			else if( !PG_U.notNull(PG_U.getCookie(this.hostName)) ){
 				user = PG_U.createUniqueID();
 				PG_U.setCookie(this.hostName, user);
-		    	console.log("** New anonymous user ** : " + user);
 			}
 			else{
 				user = PG_U.getCookie(this.hostName);
-				console.log("** Anonymous username from cookie ** : " + user);
 			}
 			console.log(PG_C);
 			PG_C.init(user); // tell go get ready
