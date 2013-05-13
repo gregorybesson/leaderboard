@@ -186,18 +186,8 @@ jQuery.noConflict();
 		if((typeof scpge !== 'undefined' && scpge !== null) && PG_U.notNull(_pg) && PG_U.notNull(_pg.apiKey)) {
 			// logic scpge
 			// request anonymous user
-                    console.log('test');
-            window.addEventListener(
-                'earsReady',
-                function (e)
-                {
-                    e.data; // contient 3 variables
-                }
-            );
-            
 			$(window).on('earsReady', function (e)
 			{
-			    console.log('string');
 				if(PG_U.notNull(e.originalEvent.data) && PG_U.notNull(e.originalEvent.data.apiKey) && PG_U.notNull(e.originalEvent.data.uid)){
 					PG_C.init(e.originalEvent.data.uid);
 				}
