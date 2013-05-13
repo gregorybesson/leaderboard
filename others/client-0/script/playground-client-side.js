@@ -80,8 +80,8 @@ PG_C.ready;
  */
 PG_C.route = {
 	//server : 'http://192.168.1.34:88/', // local home
-    //server : 'http://192.168.1.108:88/' // local work
-    server : 'http://ic.adfab.fr:88/' // server IC
+    server : 'http://192.168.1.108:88/' // local work
+    //server : 'http://ic.adfab.fr:88/' // server IC
 };
 
 /**
@@ -186,14 +186,22 @@ jQuery.noConflict();
 		if((typeof scpge !== 'undefined' && scpge !== null) && PG_U.notNull(_pg) && PG_U.notNull(_pg.apiKey)) {
 			// logic scpge
 			// request anonymous user
-			// user = getUserFromCookie() ???????;
+                    console.log('test');
+            window.addEventListener(
+                'earsReady',
+                function (e)
+                {
+                    e.data; // contient 3 variables
+                }
+            );
+            
 			$(window).on('earsReady', function (e)
 			{
+			    console.log('string');
 				if(PG_U.notNull(e.originalEvent.data) && PG_U.notNull(e.originalEvent.data.apiKey) && PG_U.notNull(e.originalEvent.data.uid)){
 					PG_C.init(e.originalEvent.data.uid);
 				}
 			});
-			//PG_C.init(/* user */); // tell go get ready
 		}
 		else if(PG_U.notNull(_pg) && PG_U.notNull(_pg.apiKey)) {
 			// create anonymous user
@@ -208,7 +216,6 @@ jQuery.noConflict();
 			else{
 				user = PG_U.getCookie(this.hostName);
 			}
-			console.log(PG_C);
 			PG_C.init(user); // tell go get ready
 		}
 		

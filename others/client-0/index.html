@@ -15,32 +15,23 @@
 	    	var _pg = _pg || {}; // creation du name space
 			_pg.apiKey = 'key_first'; // enregistre [api key || app ID]
 			
-			var scpge = {
-				triggerEvent : function (evtName)
-				{
-					var evt = document.createEvent('HTMLEvents');
-					evt.initEvent( evtName, true, false );
-					evt.data = {
-					    apiKey: 'key_first',
-					    uid: 'fake#hash#blabla'
-					};
-					window.dispatchEvent(evt);
-				}
-			};
-			
+			var scpge = document.createElement('script'); scpge.type = 'text/javascript'; scpge.async = true;
+            scpge.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '192.168.1.103/plaground-ears/js/ears.min.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(scpge, s);
+            
 			var scpgm = document.createElement('script');
 			scpgm.type = 'text/javascript';
 			scpgm.async = true;
 		    scpgm.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'localhost/play-ground/client-0/script/playground-client-side.js';
 		    var sm = document.getElementsByTagName('script')[0];
 		    sm.parentNode.insertBefore(scpgm, sm);
-		    
+		    /*
 		    setTimeout(function ()
 		    {
 		    	scpge.triggerEvent('earsReady');
 		    }, 2000);
 		    
-    		/*
+    		
     		PG_C.ready = function ()
     		{
     			PG_C.register('key_first');
