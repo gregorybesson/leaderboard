@@ -18,8 +18,8 @@ var pgconnect = pgconnect || {};
  */
 pgconnect.route = {
 	//server : 'http://192.168.1.34:88/', // local home
-    server : 'http://192.168.1.108:88/' // local work
-    //server : 'http://ic.adfab.fr:88/' // server IC
+    //server : 'http://192.168.1.108:88/' // local work
+    server : 'http://ic.adfab.fr:88/' // server IC
 };
 
 /**
@@ -40,9 +40,9 @@ pgconnect.register = function (api_key, user)
  */
 pgconnect.isAllowed = function ()
 {
-    if(!PG_U.notNull(this.api_key)) throw new Error('Use register() to register your API key first');
-    if(!PG_U.notNull(this.user)) throw new Error('Use register() to register a user first');
-    return PG_U.notNull(this.api_key) && PG_U.notNull(this.user);
+    if(!PG.Util.not_null(this.api_key)) throw new Error('Use register() to register your API key first');
+    if(!PG.Util.not_null(this.user)) throw new Error('Use register() to register a user first');
+    return PG.Util.not_null(this.api_key) && PG.Util.not_null(this.user);
 };
 
 
@@ -51,7 +51,7 @@ try {
     addToNamespace('Connect', pgconnect);
 }
 catch(e) {
-   throw new Error( "Cannot extends 'Connect' to 'Adfab.playground.Connect'" );
+   throw new Error( "Cannot extends 'Connect' to 'Adfab.Playground.Connect'" );
 }
 
 jQuery.noConflict();
@@ -62,8 +62,8 @@ jQuery.noConflict();
 		
 		pgconnect.init = function (user)
 		{
-		    console.log("[API_KEY=" + _pg.apiKey + "], [USER_ID=" + user + "]");
-			pgconnect.register(_pg.apiKey, user); // regiester api key
+		    console.log("[API_KEY=" + PG.Settings.apiKey + "], [USER_ID=" + user + "]");
+			pgconnect.register(PG.Settings.apiKey, user); // regiester api key
 			$.getScript(pgconnect.route.server + "socket.io/socket.io.js") // request socket.io script to create persistent connection to node server
 				.done(function(script, textStatus) { pgconnect.start(); })
 				.fail(function(jqxhr, settings, exception) { console.log('something wrong happened'); });
@@ -96,26 +96,26 @@ jQuery.noConflict();
     		        $css = null,
     		        durationTimeout = null;
     		    
-                if(PG_U.notNull(data.style)){ // add stylesheet
+                if(PG.Util.not_null(data.style)){ // add stylesheet
                     $css = $('<style type="text/css" media="screen">' + data.style + '</style>');
                     $('body').append($css);
                 }
-		        if(PG_U.notNull(data.html)){ // add html content
+		        if(PG.Util.not_null(data.html)){ // add html content
 		            $notif = data.html;
-		            if(PG_U.notNull(data.container)) $(data.container).append($notif);
-		            else if(PG_U.notNull(data.xpath)) $(document.evaluate(data.xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).append($notif);
+		            if(PG.Util.not_null(data.container)) $(data.container).append($notif);
+		            else if(PG.Util.not_null(data.xpath)) $(document.evaluate(data.xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).append($notif);
                     else $('body').append($notif);
 		        }
-                if(PG_U.notNull(data.script)){ // custom script to inject
+                if(PG.Util.not_null(data.script)){ // custom script to inject
                     $.getScript(data.script)
                         .done(function(script, textStatus) { console.log('custom script not loading'); })
                         .fail(function(jqxhr, settings, exception) { console.log('custom script not loading'); });
                 }
-                if(PG_U.notNull(data.duration)){ // do some extra job if notification has to disappear
+                if(PG.Util.not_null(data.duration)){ // do some extra job if notification has to disappear
                     durationTimeout = setTimeout(function ()
                     {
-                        if(PG_U.notNull($notif)) $notif.remove();
-                        if(PG_U.notNull($css)) $css.remove();
+                        if(PG.Util.not_null($notif)) $notif.remove();
+                        if(PG.Util.not_null($css)) $css.remove();
                         clearTimeout(durationTimeout);
                     }, data.duration);
                 }
@@ -127,23 +127,17 @@ jQuery.noConflict();
 		    socket.emit('logged', { room : pgconnect.api_key, user : pgconnect.user }); 
 		}
 		// check if ears script is with me
-		if((typeof scpge !== 'undefined' && scpge !== null) && PG_U.notNull(_pg) && PG_U.notNull(_pg.apiKey)) {
-			$(window).on('earsReady', function (e) // listen for window event sent by ears script
-			{
-				if(PG_U.notNull(e.originalEvent.data) && PG_U.notNull(e.originalEvent.data.apiKey) && PG_U.notNull(e.originalEvent.data.uid))
-					pgconnect.init(e.originalEvent.data.uid);
-				$(window).off('earsReady');
-			});
+		if(PG.Config.modules.ears && PG.Util.not_null(PG.Settings.apiKey)) {
+			pgconnect.init(PG.Util.readCookie("login"));
 		} // If not DIY "create anonymous user"
-		else if(PG_U.notNull(_pg) && PG_U.notNull(_pg.apiKey)) {
-		    this.hostName = PG_U.getHostname();
-		    if(PG_U.notNull(user)) user = user;
-			else if( !PG_U.notNull(PG_U.getCookie(this.hostName)) ){
-				user = PG_U.createUniqueID();
-				PG_U.setCookie(this.hostName, user);
+		else if(PG.Util.not_null(PG.Settings.apiKey)) {
+		    var pgcookie = PG.Util.readCookie();
+		    if(PG.Util.not_null(pgcookie)) user = pgcookie;
+			else {
+				user = PG.Util.GenerateUniqueId();
 			}
-			else user = PG_U.getCookie(this.hostName);
-			pgconnect.init(user); // tell go get ready
+			//else user = Adfab.Playground.getCookie(this.hostName);
+			if(PG.Util.not_null(user)) pgconnect.init(user); // tell go get ready
 		}
 	});
 })(jQuery, pgconnect);
