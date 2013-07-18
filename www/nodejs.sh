@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NODE=/opt/node/bin/node
+NODE=/nodejs/node-v0.10.5/node
 SERVER_JS_FILE=server.js
 USER=root
 OUT=nodejs.log
