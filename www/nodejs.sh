@@ -2,7 +2,7 @@
 
 NODE=/opt/node/bin/node
 SERVER_JS_FILE=server.js
-USER=pi
+USER=root
 OUT=/home/pi/nodejs.log
 
 case "$1" in
