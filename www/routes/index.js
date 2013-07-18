@@ -32,6 +32,7 @@ exports.err404 = function (req, res)
 exports.maybe = function (req, res)
 {
     var body = 'Alive baby!';
+    res.header('Access-Control-Allow-Origin', '*');
 	res.setHeader('Content-Type', 'text/plain');
 	res.setHeader('Content-Length', body.length);
 	res.end(body);
