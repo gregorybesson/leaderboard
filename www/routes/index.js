@@ -25,6 +25,19 @@ exports.err404 = function (req, res)
 };
 
 /**
+ * Test if the server is alive or dead
+ * @param {Object} req, express auto send this param
+ * @param {Object} res, express auto send this param
+ */
+exports.maybe = function (req, res)
+{
+    var body = 'Alive baby!';
+	res.setHeader('Content-Type', 'text/plain');
+	res.setHeader('Content-Length', body.length);
+	res.end(body);
+};
+
+/**
  * LeaderBoard router 
  * @param {Object} req, express auto send this param
  * @param {Object} res, express auto send this param

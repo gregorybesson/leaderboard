@@ -35,6 +35,7 @@ server.listen(CONF.PORT);
 /* Define default index router */
 app.get('/', routes.index);
 
+app.get('/maybe-baby', routes.maybe);
 /* Define router for user who request a leaderboard */
 app.get('/widget/:type/:roomID', routes.widget);
 
