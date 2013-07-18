@@ -13,6 +13,7 @@ start)
     ;;
 
 stop)
+    echo "killing node: $NODE $SERVER_JS_FILE"
     killall $NODE
     ;;
 
