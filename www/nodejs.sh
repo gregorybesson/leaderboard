@@ -1,9 +1,8 @@
 #!/bin/bash
 
-NODE=/nodejs/node-v0.10.5/
 SERVER_JS_FILE=server.js
 USER=root
-OUT=nodejs.log
+OUT=/root/PROJETS/mouthnode/leaderboard/www/nodejs.log
 
 case "$1" in
 
