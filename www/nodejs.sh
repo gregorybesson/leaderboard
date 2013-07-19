@@ -9,6 +9,10 @@ case "$1" in
 
 start)
     echo "starting node: $NODE $SERVER_JS_FILE"
+    echo "user : $USER"
+    echo "node : $NODE"
+    echo "server : $SERVER_JS_FILE"
+    echo "out : $OUT"
     sudo -u $USER $NODE $SERVER_JS_FILE > $OUT 2>$OUT &
     ;;
 
