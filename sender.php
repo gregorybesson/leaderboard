@@ -9,7 +9,7 @@
 	</head>
 	<body>
 		<div>
-			<form action="http://localhost/github/leaderboard/php/test.php" method="post" accept-charset="utf-8">
+			<form action="php/test.php" method="post" accept-charset="utf-8">
 				<p>
 					<label for="apiKey">api key</label>
 					<input type="text" name="apiKey" value="key_first" id="apiKey"/>
