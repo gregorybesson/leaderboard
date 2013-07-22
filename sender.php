@@ -16,19 +16,19 @@
 				</p>
 				<p>
 					<label for="userId">user id</label>
-					<input type="text" name="userId" value="" id="userId"/>
+					<input type="text" name="userId" value=")6n236c3h8)9-713p2o4" id="userId"/>
 				</p>
 				<p>
 					<label for="container">html container</label>
-					<input type="text" name="container" value="" id="container"/>
+					<input type="text" name="container" value="body" id="container"/>
 				</p>
 				<p>
 					<label for="html">html content</label>
-					<input type="text" name="html" value="" id="userId"/>
+					<input type="text" name="html" value='<div class="welcome">Hello user</div>' id="userId"/>
 				</p>
 				<p>
 					<label for="style">css stylesheet</label>
-					<input type="text" name="style" value="" id="style"/>
+					<input type="text" name="style" value="http://ic.adfab.fr/mouthnode/leaderboard/css/pmagento/welcome.css" id="style"/>
 				</p>
 				<p>
 					<label for="duration">duration boolean</label>

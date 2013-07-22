@@ -6,17 +6,20 @@ if(!isset($_POST) || !isset($_POST["apiKey"]) || !isset($_POST["userId"]) ){
 $args = array( 'apiKey' => $_POST["apiKey"], 'userId' => $_POST["userId"] );
 
 $args["container"] = (isset($_POST["container"]) && isset($_POST["container"]) != "") ? $_POST["container"] : "body";
-$args["html"] = (isset($_POST["html"]) && isset($_POST["html"]) != "") ? $_POST["html"] : "";
 
-if(isset($_POST["style"]) && isset($_POST["style"]) != ""){
+$args["html"] = (isset($_POST["html"]) && $_POST["html"] != "") ?
+    str_replace("=", "%3D", $_POST["html"]) :
+    "";
+
+if(isset($_POST["style"]) && $_POST["style"] != ""){
 	$args["style"] = $_POST["style"];
 }
 
-if(isset($_POST["duration"]) && isset($_POST["duration"]) != ""){
+if(isset($_POST["duration"]) && $_POST["duration"] != ""){
 	$args["duration"] = $_POST["duration"];
 }
 
-if(isset($_POST["script"]) && isset($_POST["script"]) != ""){
+if(isset($_POST["script"]) && $_POST["script"] != ""){
 	$args["script"] = $_POST["script"];
 }
 

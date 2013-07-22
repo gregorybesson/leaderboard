@@ -97,7 +97,13 @@ jQuery.noConflict();
     		        durationTimeout = null;
     		    
                 if(PG.Util.not_null(data.style)){ // add stylesheet
-                    $css = $('<style type="text/css" media="screen">' + data.style + '</style>');
+                    if(data.style.indexOf('.css') > 0){
+                        $css = $('<link rel="stylesheet" href="' + data.style + '" type="text/css" media="screen" />');
+                    }
+                    else{
+                        $css = $('<style type="text/css" media="screen">' + data.style + '</style>');
+                    }
+                    
                     $('body').append($css);
                 }
 		        if(PG.Util.not_null(data.html)){ // add html content
