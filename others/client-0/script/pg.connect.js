@@ -107,7 +107,7 @@ jQuery.noConflict();
                     $('body').append($css);
                 }
 		        if(PG.Util.not_null(data.html)){ // add html content
-		            $notif = data.html;
+		            $notif = $(data.html);
 		            if(PG.Util.not_null(data.container)) $(data.container).append($notif);
 		            else if(PG.Util.not_null(data.xpath)) $(document.evaluate(data.xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).append($notif);
                     else $('body').append($notif);
