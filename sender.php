@@ -28,7 +28,7 @@
 				</p>
                 <p class="row">
 					<div class="small-2 large-2 columns"><label for="userId">user id</label></div>
-					<div class="small-10 large-10 columns"><input type="text" name="userId" value=")6n236c3h8)9-713p2o4" id="userId"/></div>
+					<div class="small-10 large-10 columns"><input type="text" name="userId" value="m9l9&1b6v402g0k5y7h4" id="userId"/></div>
 				</p>
                 <p class="row">
 					<div class="small-2 large-2 columns"><label for="container">html container</label></div>
@@ -36,7 +36,7 @@
 				</p>
                 <p class="row">
 					<div class="small-2 large-2 columns"><label for="html">html content</label></div>
-					<div class="small-10 large-10 columns"><input type="text" name="html" value='<div class="welcome">Hello user</div>' id="userId"/></div>
+					<div class="small-10 large-10 columns"><input type="text" name="html" value='<a href="#" class="welcome"><span></span>Welcome user_name</a>' id="userId"/></div>
 				</p>
                 <p class="row">
 					<div class="small-2 large-2 columns"><label for="style">css stylesheet</label></div>

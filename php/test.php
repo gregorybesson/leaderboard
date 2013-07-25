@@ -25,7 +25,7 @@ if(isset($_POST["script"]) && $_POST["script"] != ""){
 // send to node server via curl
 $ch = curl_init();
 $curlConfig = array(
-    //CURLOPT_URL            => "http://playground.dev:88/notification",
+    //CURLOPT_URL            => "http://192.168.1.108:88/notification",
     CURLOPT_URL            => "http://ic.adfab.fr:88/notification",
     CURLOPT_POST           => true,
     CURLOPT_RETURNTRANSFER => true,
