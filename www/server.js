@@ -60,6 +60,7 @@ app.post('/update', function (req, res)
 /* For now POST method is not in the MODEL part of the app logic because it use the socket and not the REST API */
 app.post('/notification', function (req, res)
 {
+	console.log('-------------------Notification');
     var bodyRequest = req.body;
     //console.log(bodyRequest);
     //console.log(JSON.parse(bodyRequest));
@@ -79,18 +80,13 @@ app.post('/notification', function (req, res)
         res.end('');
         return;
     }
-    console.log("-----------------------");
-    console.log(allClients);
-    console.log("-----------------------");
-    console.log(bodyRequest);
-    console.log("-----------------------");
-    console.log(allClients[bodyRequest.apiKey]);
-    console.log("-----------------------");
+	console.log('-------------------Before sending');
 	if( util.NotNull(bodyRequest) &&
 		util.NotNull(bodyRequest.html) &&
 		util.NotNull(bodyRequest.apiKey) &&
 		util.NotNull(bodyRequest.userId) &&
 		util.NotNull(allClients[bodyRequest.apiKey])) { // If is enough to send notif
+		console.log('-------------------Sending');
 		
 	    for (var i=0; i < allClients[bodyRequest.apiKey].length; i++) {
 			if(allClients[bodyRequest.apiKey][i].userId == bodyRequest.userId){
