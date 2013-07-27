@@ -79,12 +79,13 @@ app.post('/notification', function (req, res)
         res.end('');
         return;
     }
+    console.log(allClients);
 	if( util.NotNull(bodyRequest) &&
 		util.NotNull(bodyRequest.html) &&
 		util.NotNull(bodyRequest.apiKey) &&
 		util.NotNull(bodyRequest.userId) &&
 		util.NotNull(allClients[bodyRequest.apiKey])) { // If is enough to send notif
-		console.log(allClients);
+		
 	    for (var i=0; i < allClients[bodyRequest.apiKey].length; i++) {
 			if(allClients[bodyRequest.apiKey][i].userId == bodyRequest.userId){
 				allClients[bodyRequest.apiKey][i].emit('notification', bodyRequest);
