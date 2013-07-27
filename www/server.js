@@ -79,7 +79,11 @@ app.post('/notification', function (req, res)
         res.end('');
         return;
     }
+    console.log("-----------------------");
     console.log(allClients);
+    console.log("-----------------------");
+    console.log(bodyRequest);
+    console.log("-----------------------");
 	if( util.NotNull(bodyRequest) &&
 		util.NotNull(bodyRequest.html) &&
 		util.NotNull(bodyRequest.apiKey) &&
