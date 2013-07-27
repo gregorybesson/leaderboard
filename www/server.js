@@ -62,7 +62,7 @@ app.post('/notification', function (req, res)
 {
 	console.log('-------------------Notification');
     var bodyRequest = req.body;
-    //console.log(bodyRequest);
+    console.log(bodyRequest);
     //console.log(JSON.parse(bodyRequest));
     for (var i in bodyRequest)
 	{
