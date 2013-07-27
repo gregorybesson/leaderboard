@@ -82,12 +82,15 @@ app.post('/notification', function (req, res)
 	if( util.NotNull(bodyRequest) &&
 		util.NotNull(bodyRequest.html) &&
 		util.NotNull(bodyRequest.apiKey) &&
-		util.NotNull(bodyRequest.userId)) // If is enough to send notif
+		util.NotNull(bodyRequest.userId) &&
+		util.NotNull(allClients[bodyRequest.apiKey].length)) { // If is enough to send notif
+		console.log(allClients);
 	    for (var i=0; i < allClients[bodyRequest.apiKey].length; i++) {
 			if(allClients[bodyRequest.apiKey][i].userId == bodyRequest.userId){
 				allClients[bodyRequest.apiKey][i].emit('notification', bodyRequest);
 			}
 	    };
+	}
     //allClients
     //io.sockets.in(bodyRequest.apiKey).emit('notification', { "html" : '<div>html</div>' });
     var headers = {};
