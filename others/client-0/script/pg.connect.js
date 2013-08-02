@@ -17,9 +17,9 @@ var pgconnect = pgconnect || {};
  * Static 
  */
 pgconnect.route = {
-	//server : 'http://192.168.1.34:88/', // local home
+	server : 'http://192.168.1.34:88/', // local home
     //server : 'http://192.168.1.108:88/' // local work
-    server : 'http://ic.adfab.fr:88/' // server IC
+    //server : 'http://ic.adfab.fr:88/' // server IC
 };
 
 /**

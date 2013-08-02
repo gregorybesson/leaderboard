@@ -23,37 +23,24 @@
 		    <h1 id="title">Node notification tester</h1>
 			<form action="php/test.php" method="post" accept-charset="utf-8" class="large-6">
 				<p class="row">
-					<div class="small-2 large-2 columns"><label for="apiKey">api key</label></div>
+					<div class="small-2 large-2 columns"><label for="apiKey">Api key</label></div>
 					<div class="small-10 large-10 columns"><input type="text" name="apiKey" value="key_first" id="apiKey"/></div>
 				</p>
                 <p class="row">
-					<div class="small-2 large-2 columns"><label for="userId">user id</label></div>
-					<div class="small-10 large-10 columns"><input type="text" name="userId" value="m9l9&1b6v402g0k5y7h4" id="userId"/></div>
+					<div class="small-2 large-2 columns"><label for="userId">User id</label></div>
+					<div class="small-10 large-10 columns"><input type="text" name="userId" value="#3e01206(0c1n1o6g2e5" id="userId"/></div>
 				</p>
                 <p class="row">
-					<div class="small-2 large-2 columns"><label for="container">html container</label></div>
+					<div class="small-2 large-2 columns"><label for="container">Html container</label></div>
 					<div class="small-10 large-10 columns"><input type="text" name="container" value="body" id="container"/></div>
 				</p>
                 <p class="row">
-					<div class="small-2 large-2 columns"><label for="html">html content</label></div>
-					<div class="small-10 large-10 columns"><input type="text" name="html" value='<a href="#" class="welcome"><span></span>Welcome user_name</a>' id="userId"/></div>
-				</p>
-                <p class="row">
-					<div class="small-2 large-2 columns"><label for="style">css stylesheet</label></div>
-					<div class="small-10 large-10 columns"><input type="text" name="style" value="http://ic.adfab.fr/mouthnode/leaderboard/css/pmagento/welcome.css" id="style"/></div>
-				</p>
-                <p class="row">
-					<div class="small-2 large-2 columns"><label for="duration">duration</label></div>
-					<div class="small-10 large-10 columns"><input type="text" name="duration" value="" id="duration"/></div>
-				</p>
-                <p class="row">
-					<div class="small-2 large-2 columns"><label for="script">js script</label></div>
-					<div class="small-10 large-10 columns"><input type="text" name="script" value="" id="script"/></div>
+					<div class="small-2 large-2 columns"><label for="html">Action (welcome, quit or win)</label></div>
+					<div class="small-10 large-10 columns"><input type="text" name="action" value='welcome' id="action"/></div>
 				</p>
 				<p class="row">
                     <div class="small-2 large-2 columns">&#129;</div>
                     <div class="small-10 large-10 columns"><input type="submit" value="Launch test &rarr;" class="large button expand"/></div>
-				    
 				</p>
 			</form>
 		</div>

@@ -60,10 +60,7 @@ app.post('/update', function (req, res)
 /* For now POST method is not in the MODEL part of the app logic because it use the socket and not the REST API */
 app.post('/notification', function (req, res)
 {
-	console.log('-------------------Notification');
     var bodyRequest = req.body;
-    console.log(bodyRequest);
-    //console.log(JSON.parse(bodyRequest));
     for (var i in bodyRequest)
 	{
 		try{
@@ -80,19 +77,35 @@ app.post('/notification', function (req, res)
         res.end('');
         return;
     }
-	console.log('-------------------Before sending');
+    console.log(bodyRequest);
 	if( util.NotNull(bodyRequest) &&
 		util.NotNull(bodyRequest.html) &&
 		util.NotNull(bodyRequest.apiKey) &&
 		util.NotNull(bodyRequest.userId) &&
 		util.NotNull(allClients[bodyRequest.apiKey])) { // If is enough to send notif
-		console.log('-------------------Sending');
-		
+		var currentClient = null, othersClient = null;
 	    for (var i=0; i < allClients[bodyRequest.apiKey].length; i++) {
 			if(allClients[bodyRequest.apiKey][i].userId == bodyRequest.userId){
-				allClients[bodyRequest.apiKey][i].emit('notification', bodyRequest);
+				currentClient = allClients[bodyRequest.apiKey][i];
+			}
+			else{
+				
 			}
 	    };
+	    console.log(currentClient);
+		switch(bodyRequest.who){
+			case 'self':
+				if(currentClient !== null)
+					currentClient.emit('notification', bodyRequest);
+			break;
+			case 'others':
+				
+			break;
+			case 'all':
+				
+			break;
+			default:break;
+		}
 	}
     //allClients
     //io.sockets.in(bodyRequest.apiKey).emit('notification', { "html" : '<div>html</div>' });
