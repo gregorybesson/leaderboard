@@ -70,7 +70,7 @@ app.post('/notification', function (req, res)
 		}
 		catch(e){}
 	}
-    console.log(bodyRequest);
+    
     res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
     if(!util.NotNull(bodyRequest.apiKey, "") && !util.NotNull(bodyRequest.userId, "") && !(bodyRequest.apiKey in allClients)) {
         res.send(bodyRequest.apiKey);
@@ -84,6 +84,7 @@ app.post('/notification', function (req, res)
 		util.NotNull(bodyRequest.userId) &&
 		util.NotNull(allClients[bodyRequest.apiKey])) { // If is enough to send notif
 		var currentClient = null, othersClient = null;
+        console.log(currentClient);
 	    for (var i=0; i < allClients[bodyRequest.apiKey].length; i++) {
 			if(allClients[bodyRequest.apiKey][i].userId == bodyRequest.userId){
 				currentClient = allClients[bodyRequest.apiKey][i];
