@@ -70,7 +70,7 @@ app.post('/notification', function (req, res)
 		}
 		catch(e){}
 	}
-    console.log(0);
+    console.log(bodyRequest);
     res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
     if(!util.NotNull(bodyRequest.apiKey, "") && !util.NotNull(bodyRequest.userId, "") && !(bodyRequest.apiKey in allClients)) {
         res.send(bodyRequest.apiKey);
@@ -78,13 +78,12 @@ app.post('/notification', function (req, res)
         return;
     }
     
-    console.log(1);
 	if( util.NotNull(bodyRequest) &&
 		util.NotNull(bodyRequest.html) &&
 		util.NotNull(bodyRequest.apiKey) &&
 		util.NotNull(bodyRequest.userId) &&
 		util.NotNull(allClients[bodyRequest.apiKey])) { // If is enough to send notif
-		console.log(2);
+		
 		var currentClient = null, othersClient = null;
 	    for (var i=0; i < allClients[bodyRequest.apiKey].length; i++) {
 			if(allClients[bodyRequest.apiKey][i].userId == bodyRequest.userId){
@@ -101,7 +100,6 @@ app.post('/notification', function (req, res)
 					currentClient.emit('notification', bodyRequest);
 			break;
 			case 'others':
-                console.log('others');
                 if(currentClient !== null)
                     currentClient.broadcast.to(bodyRequest.apiKey).emit('notification', bodyRequest);
 			break;
