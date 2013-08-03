@@ -9,7 +9,8 @@ define('ALL', 'all');
 // Add each parameters
 $args = array( 'apiKey' => $_POST["apiKey"], 'userId' => $_POST["userId"] );
 $action = $_POST["action"];
-$args["style"] = 'http://localhost/github/leaderboard/css/pmagento/all.css';
+//$args["style"] = 'http://localhost/github/leaderboard/css/pmagento/all.css';
+$args["style"] = 'http://ic.adfab.fr/mouthnode/leaderboard/css/pmagento/all.css';
 $args["container"] = 'body';
 
 // html for other user that the one that just logged in
@@ -44,6 +45,7 @@ $win = '<div id="win" class="playground" >' .
 						'You have found the secret treasure' .
 					'</div>' .
 			'</div>';
+
 // html for other user that loose and didn't find the treasure
 $loose = '<div id="loose" class="playground" >' .
 					'<div >' .
@@ -101,9 +103,6 @@ function setRequestParam( $html, $who )
             sendRequest();
 		break;
 		case ALL:
-			//$args["who"] = array(
-			//	'others' => $optional
-			//);
 			$args["who"] = SELF;
             sendRequest();
             
