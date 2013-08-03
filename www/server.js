@@ -70,15 +70,9 @@ app.post('/notification', function (req, res)
 		}
 		catch(e){}
 	}
-    console.log(bodyRequest);
-    console.log(util.NotNull(bodyRequest));
-    console.log(util.NotNull(bodyRequest.html));
-    console.log(util.NotNull(bodyRequest.apiKey));
-    console.log(util.NotNull(bodyRequest.userId));
-    console.log(util.NotNull(allClients[bodyRequest.apiKey]));
+    console.log(allClients);
     res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
     if(!util.NotNull(bodyRequest.apiKey, "") && !util.NotNull(bodyRequest.userId, "") && !(bodyRequest.apiKey in allClients)) {
-        console.log('arf');
         res.send(bodyRequest.apiKey);
         res.end('');
         return;
