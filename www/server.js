@@ -70,7 +70,7 @@ app.post('/notification', function (req, res)
 		}
 		catch(e){}
 	}
-    console.log(allClients);
+    
     res.header('Access-Control-Allow-Origin', '*'); // response with allowed access header
     if(!util.NotNull(bodyRequest.apiKey, "") && !util.NotNull(bodyRequest.userId, "") && !(bodyRequest.apiKey in allClients)) {
         res.send(bodyRequest.apiKey);
