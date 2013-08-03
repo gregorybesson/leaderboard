@@ -77,7 +77,7 @@ app.post('/notification', function (req, res)
         res.end('');
         return;
     }
-    console.log(bodyRequest);
+    
 	if( util.NotNull(bodyRequest) &&
 		util.NotNull(bodyRequest.html) &&
 		util.NotNull(bodyRequest.apiKey) &&
@@ -92,23 +92,23 @@ app.post('/notification', function (req, res)
 				
 			}
 	    };
-	    console.log(currentClient);
+	    
 		switch(bodyRequest.who){
 			case 'self':
 				if(currentClient !== null)
 					currentClient.emit('notification', bodyRequest);
 			break;
 			case 'others':
-				
+                if(currentClient !== null)
+                    currentClient.broadcast.to(bodyRequest.apiKey).emit('notification', bodyRequest);
 			break;
 			case 'all':
-				
+				io.sockets.in(bodyRequest.apiKey).emit('notification', bodyRequest);
 			break;
 			default:break;
 		}
 	}
-    //allClients
-    //io.sockets.in(bodyRequest.apiKey).emit('notification', { "html" : '<div>html</div>' });
+    
     var headers = {};
     headers["Access-Control-Allow-Origin"] = "*";
     headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
@@ -116,7 +116,6 @@ app.post('/notification', function (req, res)
     headers["Access-Control-Max-Age"] = '86400'; // 24 hours
     headers["Access-Control-Allow-Headers"] = "X-Requested-With, Access-Control-Allow-Origin, X-HTTP-Method-Override, Content-Type, Authorization, Accept";
     res.writeHead(200, headers);
-    //res.send(200);
     res.end('');
 });
 
