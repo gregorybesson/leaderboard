@@ -23,6 +23,10 @@
 		    <h1 id="title">Node notification tester</h1>
 			<form action="php/test.php" method="post" accept-charset="utf-8" class="large-6">
 				<p class="row">
+					<div class="small-2 large-2 columns"><label for="url">Target url</label></div>
+					<div class="small-10 large-10 columns"><input type="text" name="url" value="http://ic.adfab.fr:88/notification" id="url"/></div>
+				</p>
+				<p class="row">
 					<div class="small-2 large-2 columns"><label for="apiKey">Api key</label></div>
 					<div class="small-10 large-10 columns"><input type="text" name="apiKey" value="key_first" id="apiKey"/></div>
 				</p>

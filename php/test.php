@@ -11,8 +11,10 @@ $args = array( 'apiKey' => $_POST["apiKey"], 'userId' => $_POST["userId"] );
 $action = $_POST["action"];
 //$args["style"] = 'http://localhost/github/leaderboard/css/pmagento/all.css';
 $args["style"] = 'http://ic.adfab.fr/mouthnode/leaderboard/css/pmagento/all.css';
-$args["container"] = 'body';
-
+$args["container"] = isset($_POST["container"]) ? $_POST["container"] : 'body';
+$url = isset($_POST["url"]) ? $_POST["url"] : "http://ic.adfab.fr:88/notification";
+// "http://192.168.1.34:88/notification"
+// "http://192.168.1.108:88/notification"
 // html for other user that the one that just logged in
 $welcome ='<div id="welcome" class="playground" >' .
 					'<div >' .
@@ -64,13 +66,11 @@ $loose = '<div id="loose" class="playground" >' .
  */
 function sendRequest()
 {
-    global $args;
+    global $args, $url;
     
     $ch = curl_init();
     $curlConfig = array(
-        //CURLOPT_URL            => "http://192.168.1.34:88/notification",
-        //CURLOPT_URL            => "http://192.168.1.108:88/notification",
-        CURLOPT_URL            => "http://ic.adfab.fr:88/notification",
+        CURLOPT_URL            => $url,
         CURLOPT_POST           => true,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POSTFIELDS     => json_encode($args)
